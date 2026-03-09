@@ -3,7 +3,7 @@
 interface UsageMeterProps {
   used: number;
   limit: number;
-  tier: 'free' | 'active' | 'beast';
+  tier: 'free' | 'job_hunting' | 'beast';
 }
 
 const tierConfig: Record<UsageMeterProps['tier'], { label: string; barColor: string; badgeClasses: string }> = {
@@ -12,8 +12,8 @@ const tierConfig: Record<UsageMeterProps['tier'], { label: string; barColor: str
     barColor: 'bg-slate-500',
     badgeClasses: 'bg-slate-100 text-slate-700',
   },
-  active: {
-    label: 'Active',
+  job_hunting: {
+    label: 'Job Hunting',
     barColor: 'bg-indigo-500',
     badgeClasses: 'bg-indigo-100 text-indigo-700',
   },

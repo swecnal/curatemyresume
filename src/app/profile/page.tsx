@@ -51,7 +51,7 @@ interface ProfileData {
   locationPreferences: string[];
   securityClearance: string;
   industries: string[];
-  tier: 'free' | 'active' | 'beast';
+  tier: 'free' | 'job_hunting' | 'beast';
 }
 
 const defaultProfile: ProfileData = {

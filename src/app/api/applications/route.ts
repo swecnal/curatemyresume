@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
+import { canAccess } from "@/lib/tier-features";
 
 export async function GET() {
   try {
@@ -8,6 +9,14 @@ export async function GET() {
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Tier gate
+    if (!canAccess(session.user.tier, "applicationTracking")) {
+      return NextResponse.json(
+        { error: "Application tracking requires Job Hunting or Beast Mode" },
+        { status: 403 }
+      );
     }
 
     const userId = session.user.cmr_user_id;

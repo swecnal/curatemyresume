@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { parseResume } from "@/lib/claude";
 import { extractResumeText } from "@/lib/parse-resume";
 import { randomUUID } from "crypto";
+import { canAccess } from "@/lib/tier-features";
 
 export async function POST(request: Request) {
   try {
@@ -57,7 +58,20 @@ export async function POST(request: Request) {
     // Parse resume with Claude to extract structured profile
     const parsedProfile = await parseResume(rawText);
 
-    // Generate a resume ID
+    const tier = session.user.tier ?? "free";
+    const shouldStore = canAccess(tier, "resumeStorage");
+
+    // For non-storage tiers (Free, Job Hunting): return parsed data without persisting
+    if (!shouldStore) {
+      return NextResponse.json({
+        rawText,
+        parsedProfile,
+        fileName: fileName ?? "pasted-text",
+        ephemeral: true,
+      });
+    }
+
+    // For Beast tier: persist to DB + Storage as before
     const resumeId = randomUUID();
 
     // Upload original file to Supabase Storage if we have one
@@ -73,7 +87,6 @@ export async function POST(request: Request) {
 
       if (uploadError) {
         console.error("Storage upload error:", uploadError);
-        // Continue without storage — the resume text is what matters
       } else {
         const { data: publicUrl } = supabase.storage
           .from("cmr-resumes")
@@ -122,5 +135,72 @@ export async function POST(request: Request) {
     const message =
       error instanceof Error ? error.message : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = session.user.cmr_user_id;
+    const tier = session.user.tier ?? "free";
+    const shouldStore = canAccess(tier, "resumeStorage");
+
+    // Non-storage tiers have no stored resumes
+    if (!shouldStore) {
+      return NextResponse.json({
+        hasResume: false,
+        ephemeralMode: true,
+        activeResume: null,
+        history: [],
+      });
+    }
+
+    // Fetch active resume
+    const { data: activeResume } = await supabase
+      .from("cmr_resumes")
+      .select("id, file_name, parsed_profile, created_at, is_active")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    // Fetch resume history
+    const { data: history } = await supabase
+      .from("cmr_resumes")
+      .select("id, file_name, created_at, is_active")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    const profileSummary = activeResume?.parsed_profile
+      ? `${(activeResume.parsed_profile as any).name ?? ""} — ${(activeResume.parsed_profile as any).current_title ?? ""}`
+      : null;
+
+    return NextResponse.json({
+      hasResume: !!activeResume,
+      activeResume: activeResume
+        ? {
+            id: activeResume.id,
+            fileName: activeResume.file_name,
+            profileSummary,
+            createdAt: activeResume.created_at,
+          }
+        : null,
+      history: (history ?? []).map((r: any) => ({
+        id: r.id,
+        fileName: r.file_name,
+        createdAt: r.created_at,
+        isActive: r.is_active,
+      })),
+    });
+  } catch (error) {
+    console.error("Resume fetch error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

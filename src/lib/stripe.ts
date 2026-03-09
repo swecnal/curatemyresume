@@ -42,16 +42,16 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
     monthlyPrice: 0,
     curationsPerMonth: 3,
   },
-  active: {
-    name: "Active",
-    priceId: process.env.STRIPE_PRICE_ACTIVE ?? "price_active_placeholder",
-    monthlyPrice: 5,
+  job_hunting: {
+    name: "Job Hunting",
+    priceId: process.env.STRIPE_PRICE_JOB_HUNTING ?? "price_job_hunting_placeholder",
+    monthlyPrice: 6,
     curationsPerMonth: 25,
   },
   beast: {
     name: "Beast Mode",
     priceId: process.env.STRIPE_PRICE_BEAST ?? "price_beast_placeholder",
-    monthlyPrice: 25,
+    monthlyPrice: 24,
     curationsPerMonth: null,
   },
 };

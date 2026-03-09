@@ -13,6 +13,13 @@ export interface CurationResult {
   gaps: string[];
   company: string;
   role: string;
+  marketSalaryMin?: number;
+  marketSalaryMax?: number;
+  marketSalaryNotes?: string;
+  negotiationLeverage?: string[];
+  equityBenchmark?: string;
+  totalCompEstimate?: string;
+  gapDetails?: { skill: string; importance: string; bridgeStrategy: string }[];
 }
 
 interface ResultCardProps {
@@ -31,8 +38,8 @@ function scoreBg(score: number): string {
   return 'bg-red-50 border-red-200';
 }
 
-function formatSalary(value: number | null): string {
-  if (value === null) return '--';
+function formatSalary(value: number | null | undefined): string {
+  if (value === null || value === undefined) return '--';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -148,6 +155,62 @@ export default function ResultCard({ result }: ResultCardProps) {
             <p className="mt-3 text-xs leading-relaxed text-slate-500">{result.salaryNotes}</p>
           )}
         </div>
+
+        {/* Market Salary Section */}
+        {(result.marketSalaryMin || result.marketSalaryMax) && (
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <h4 className="mb-3 text-sm font-semibold text-blue-700">Fair Market Salary</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <p className="text-xs text-blue-500">Market Min</p>
+                <p className="text-sm font-semibold text-blue-900">{formatSalary(result.marketSalaryMin ?? null)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-blue-500">Market Max</p>
+                <p className="text-sm font-semibold text-blue-900">{formatSalary(result.marketSalaryMax ?? null)}</p>
+              </div>
+            </div>
+            {result.marketSalaryNotes && (
+              <p className="mt-2 text-xs leading-relaxed text-blue-600">{result.marketSalaryNotes}</p>
+            )}
+          </div>
+        )}
+
+        {/* Negotiation Insights Section */}
+        {result.negotiationLeverage && result.negotiationLeverage.length > 0 && (
+          <div className="mt-4 rounded-lg border border-violet-200 bg-violet-50 p-4">
+            <h4 className="mb-2 text-sm font-semibold text-violet-700">Negotiation Insights</h4>
+            <ul className="space-y-1">
+              {result.negotiationLeverage.map((point, i) => (
+                <li key={i} className="text-sm text-violet-600">&bull; {point}</li>
+              ))}
+            </ul>
+            {result.equityBenchmark && <p className="mt-2 text-xs text-violet-500">Equity: {result.equityBenchmark}</p>}
+            {result.totalCompEstimate && <p className="text-xs text-violet-500">Est. Total Comp: {result.totalCompEstimate}</p>}
+          </div>
+        )}
+
+        {/* Detailed Gap Analysis Section */}
+        {result.gapDetails && result.gapDetails.length > 0 && (
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <h4 className="mb-3 text-sm font-semibold text-amber-700">Skill Gap Details</h4>
+            <div className="space-y-3">
+              {result.gapDetails.map((gap, i) => (
+                <div key={i} className="text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-amber-900">{gap.skill}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                      gap.importance === 'critical' ? 'bg-red-100 text-red-700' :
+                      gap.importance === 'important' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-slate-100 text-slate-600'
+                    }`}>{gap.importance}</span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-amber-600">{gap.bridgeStrategy}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

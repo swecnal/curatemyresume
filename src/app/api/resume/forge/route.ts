@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { forgeResume } from "@/lib/claude";
+import { canAccess } from "@/lib/tier-features";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +10,14 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Tier gate
+    if (!canAccess(session.user.tier, "resumeForge")) {
+      return NextResponse.json(
+        { error: "ResumeForge requires Job Hunting or Beast Mode subscription" },
+        { status: 403 }
+      );
     }
 
     const userId = session.user.cmr_user_id;

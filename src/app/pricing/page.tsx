@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import PricingCard from '@/components/PricingCard';
 
-type Tier = 'free' | 'active' | 'beast';
+type Tier = 'free' | 'job_hunting' | 'beast';
 
 export default function PricingPage() {
   const [currentTier, setCurrentTier] = useState<Tier>('free');

@@ -1,6 +1,6 @@
 export const TIER_LIMITS: Record<string, number> = {
   free: 3,
-  active: 25,
+  job_hunting: 25,
   beast: Infinity,
 };
 

@@ -53,12 +53,30 @@ export interface JDAnalysis {
   matched_strong_skills?: string[];
   matched_developing_skills?: string[];
   missing_skills?: string[];
+  // Salary research (Job Hunting+)
+  market_salary_min?: number;
+  market_salary_max?: number;
+  market_salary_notes?: string;
+  // Advanced salary (Beast)
+  negotiation_leverage?: string[];
+  equity_benchmark?: string;
+  bonus_benchmark?: string;
+  total_comp_estimate?: string;
+  // Detailed gap analysis (Job Hunting+)
+  gap_details?: { skill: string; importance: "critical" | "important" | "nice-to-have"; bridge_strategy: string }[];
+}
+
+export interface AnalysisOptions {
+  salaryResearch?: boolean;
+  advancedSalary?: boolean;
+  detailedGapAnalysis?: boolean;
 }
 
 export async function analyzeJD(
   resumeText: string,
   jdText: string,
-  userPrefs: UserPrefs
+  userPrefs: UserPrefs,
+  options: AnalysisOptions = {}
 ): Promise<JDAnalysis> {
   const salaryContext = buildSalaryContext(userPrefs);
   const locationContext = userPrefs.location_preferences?.length
@@ -84,6 +102,34 @@ When assessing fit, weight Strong Skills more heavily. Note any JD-required skil
     ? `The candidate's security clearance status: ${userPrefs.security_clearance}. If the JD requires a clearance the candidate doesn't have, flag this as a significant gap.`
     : "";
 
+  const salaryResearchContext = options.salaryResearch
+    ? `\nFAIR MARKET SALARY RESEARCH:
+Based on your knowledge of compensation data, provide an estimated market salary range for this role considering:
+- Role title and seniority level
+- Location (adjust for cost of living if location is specified)
+- Industry and company size indicators in the JD
+Add these fields to your response:
+- "market_salary_min": number (estimated fair market minimum annual base)
+- "market_salary_max": number (estimated fair market maximum annual base)
+- "market_salary_notes": string (brief explanation of the estimate — data points considered, confidence level)`
+    : "";
+
+  const advancedSalaryContext = options.advancedSalary
+    ? `\nADVANCED SALARY & NEGOTIATION INSIGHTS:
+In addition to the market range, provide:
+- "negotiation_leverage": string[] (3-5 specific leverage points for this candidate/role combination)
+- "equity_benchmark": string (typical equity/RSU range for this role level at similar companies)
+- "bonus_benchmark": string (typical bonus structure — percentage of base, signing bonus norms)
+- "total_comp_estimate": string (estimated total annual compensation including base + bonus + equity)`
+    : "";
+
+  const detailedGapContext = options.detailedGapAnalysis
+    ? `\nDETAILED SKILL GAP ANALYSIS:
+For each missing or developing skill that the JD requires, provide:
+- "gap_details": [{ "skill": string, "importance": "critical" | "important" | "nice-to-have", "bridge_strategy": string }]
+Where importance reflects how essential the skill is based on JD language, and bridge_strategy suggests how the candidate could address the gap (certification, project, online course, etc.)`
+    : "";
+
   const systemPrompt = `You are an expert career advisor and job-fit analyst. Your job is to analyze a job description against a candidate's resume and produce a structured fit assessment.
 
 Build the candidate profile entirely from the resume text provided — do not assume anything not stated in the resume.
@@ -107,6 +153,9 @@ ${locationContext}
 ${targetRolesContext}
 ${skillsContext}
 ${clearanceContext}
+${salaryResearchContext}
+${advancedSalaryContext}
+${detailedGapContext}
 
 Respond with ONLY valid JSON matching this exact structure (no markdown, no extra text):
 {
@@ -124,12 +173,22 @@ Respond with ONLY valid JSON matching this exact structure (no markdown, no extr
   "salary_notes": "string (any additional comp details — equity, bonus, benefits mentioned)",
   "matched_strong_skills": ["string"],
   "matched_developing_skills": ["string"],
-  "missing_skills": ["string"]
+  "missing_skills": ["string"]${options.salaryResearch ? `,
+  "market_salary_min": number,
+  "market_salary_max": number,
+  "market_salary_notes": "string"` : ""}${options.advancedSalary ? `,
+  "negotiation_leverage": ["string"],
+  "equity_benchmark": "string",
+  "bonus_benchmark": "string",
+  "total_comp_estimate": "string"` : ""}${options.detailedGapAnalysis ? `,
+  "gap_details": [{ "skill": "string", "importance": "critical | important | nice-to-have", "bridge_strategy": "string" }]` : ""}
 }`;
+
+  const maxTokens = options.advancedSalary ? 3000 : options.salaryResearch || options.detailedGapAnalysis ? 2500 : 1500;
 
   const response = await anthropic.messages.create({
     model: MODEL,
-    max_tokens: 1500,
+    max_tokens: maxTokens,
     system: systemPrompt,
     messages: [
       {
@@ -312,11 +371,14 @@ export interface TailoredResume {
   changes_summary: string;
 }
 
+export type CompanyType = "startup" | "enterprise" | "agency" | "government" | "nonprofit" | "auto";
+
 export async function tailorResume(
   resumeText: string,
   jdText: string,
   fitAnalysis: JDAnalysis,
-  skillTiers?: { strong_skills?: string[]; developing_skills?: string[] }
+  skillTiers?: { strong_skills?: string[]; developing_skills?: string[] },
+  companyType?: CompanyType
 ): Promise<TailoredResume> {
   const skillTierRules = (skillTiers?.strong_skills?.length || skillTiers?.developing_skills?.length)
     ? `\nSKILL TIER RULES:
@@ -331,6 +393,19 @@ When tailoring:
 - Priority: match JD keywords from Strong Skills first, then fill gaps with Developing Skills`
     : "";
 
+  const companyToneContext = companyType && companyType !== "auto"
+    ? `\nCOMPANY TONE MATCHING:
+The target company is a ${companyType} environment. Adjust the resume tone accordingly:
+- startup: Action-oriented, scrappy language. Emphasize versatility, rapid impact, building from scratch, wearing multiple hats.
+- enterprise: Process-oriented, structured language. Emphasize scale, cross-functional collaboration, governance, methodology.
+- agency: Client-focused language. Emphasize project diversity, deadline management, stakeholder communication.
+- government: Compliance-focused language. Emphasize clearances, certifications, structured processes, documentation.
+- nonprofit: Mission-driven language. Emphasize impact, resource efficiency, community engagement, grant outcomes.`
+    : companyType === "auto"
+    ? `\nCOMPANY TONE MATCHING:
+Infer the company type from the JD's language, company description, and industry signals, then adjust the resume tone to match. Consider whether the language suggests startup, enterprise, agency, government, or nonprofit culture.`
+    : "";
+
   const systemPrompt = `You are ResumeTailor, an elite career strategist who optimizes resumes for specific job descriptions. You operate in Beast Mode — every word earns its place.
 
 YOUR MISSION:
@@ -343,6 +418,7 @@ OPTIMIZATION STRATEGY:
 4. KEYWORD MATCH: Naturally incorporate keywords and phrases from the JD into the resume
 5. SUMMARY REWRITE: Craft a summary that speaks directly to the role's core needs
 ${skillTierRules}
+${companyToneContext}
 
 HARD RULES — DO NOT VIOLATE:
 - NEVER fabricate experiences, skills, certifications, or metrics
@@ -374,5 +450,72 @@ Respond with ONLY valid JSON (no markdown, no code blocks):
   const raw =
     response.content[0].type === "text" ? response.content[0].text : "";
   const parsed: TailoredResume = JSON.parse(stripCodeBlock(raw));
+  return parsed;
+}
+
+// ---------------------------------------------------------------------------
+// 5. curateCoverLetter (Beast Mode)
+// ---------------------------------------------------------------------------
+
+export type CoverLetterTone = "professional" | "conversational" | "enthusiastic" | "formal";
+
+export interface CuratedCoverLetter {
+  curated_text: string;
+  changes_summary: string;
+}
+
+export async function curateCoverLetter(
+  coverLetterText: string,
+  jdText: string,
+  resumeText: string,
+  fitAnalysis: JDAnalysis,
+  tone: CoverLetterTone = "professional"
+): Promise<CuratedCoverLetter> {
+  const toneInstructions: Record<CoverLetterTone, string> = {
+    professional: "Maintain a polished, professional tone. Clear and confident without being stiff.",
+    conversational: "Use a warm, approachable tone. Sound like a competent person having a genuine conversation.",
+    enthusiastic: "Convey genuine excitement about the opportunity. Energetic but not over-the-top.",
+    formal: "Use traditional business letter conventions. Structured, respectful, and precise.",
+  };
+
+  const systemPrompt = `You are a cover letter specialist. Your job is to curate the candidate's existing cover letter to maximize its effectiveness for a specific job description.
+
+TONE: ${toneInstructions[tone]}
+
+YOUR MISSION:
+1. Preserve the candidate's voice and overall structure
+2. Align the cover letter's emphasis with the JD's top priorities
+3. Reference specific requirements from the JD where the candidate has matching experience
+4. Tighten the writing — remove filler, strengthen verbs, sharpen claims
+5. Ensure the opening hooks the reader and the closing has a clear call-to-action
+
+HARD RULES:
+- NEVER fabricate accomplishments, skills, or experiences
+- NEVER add claims not supported by the resume or original cover letter
+- Keep the letter to one page (roughly 300-400 words)
+- Maintain natural paragraph flow — don't over-optimize into bullet points
+
+OUTPUT FORMAT:
+Respond with ONLY valid JSON (no markdown, no code blocks):
+{
+  "curated_text": "string (the full curated cover letter)",
+  "changes_summary": "string (bullet-point list of key changes made and why)"
+}`;
+
+  const response = await anthropic.messages.create({
+    model: MODEL,
+    max_tokens: 2000,
+    system: systemPrompt,
+    messages: [
+      {
+        role: "user",
+        content: `ORIGINAL COVER LETTER:\n${coverLetterText}\n\n---\n\nJOB DESCRIPTION:\n${jdText}\n\n---\n\nCANDIDATE RESUME:\n${resumeText}\n\n---\n\nFIT ANALYSIS:\n${JSON.stringify(fitAnalysis, null, 2)}\n\nPlease curate this cover letter for the role.`,
+      },
+    ],
+  });
+
+  const raw =
+    response.content[0].type === "text" ? response.content[0].text : "";
+  const parsed: CuratedCoverLetter = JSON.parse(stripCodeBlock(raw));
   return parsed;
 }

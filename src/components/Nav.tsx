@@ -3,10 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import { canAccess } from '@/lib/tier-features';
 
 export default function Nav() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const tier = session?.user?.tier ?? 'free';
+  const showApplications = canAccess(tier, 'applicationTracking');
 
   const leftLinks = [
     { href: '/dashboard', label: 'Dashboard' },
@@ -14,7 +18,7 @@ export default function Nav() {
   ];
 
   const rightLinks = [
-    { href: '/applications', label: 'Applications' },
+    ...(showApplications ? [{ href: '/applications', label: 'Applications' }] : []),
     { href: '/pricing', label: 'Pricing' },
   ];
 

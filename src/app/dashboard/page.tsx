@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import UsageMeter from '@/components/UsageMeter';
+import { canAccess } from '@/lib/tier-features';
 
 interface UserStats {
   totalCurations: number;
   applied: number;
   interviewing: number;
   offers: number;
-  tier: 'free' | 'active' | 'beast';
+  tier: 'free' | 'job_hunting' | 'beast';
   usedThisMonth: number;
   monthlyLimit: number;
 }
@@ -100,17 +101,20 @@ export default function DashboardPage() {
     );
   }
 
-  const statCards = [
-    {
-      label: 'Total Curations',
-      value: stats?.totalCurations ?? 0,
-      icon: (
-        <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-        </svg>
-      ),
-      color: 'bg-indigo-50',
-    },
+  const showAppStats = canAccess(stats?.tier ?? 'free', 'applicationTracking');
+
+  const curationCard = {
+    label: 'Total Curations',
+    value: stats?.totalCurations ?? 0,
+    icon: (
+      <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+      </svg>
+    ),
+    color: 'bg-indigo-50',
+  };
+
+  const appCards = [
     {
       label: 'Applied',
       value: stats?.applied ?? 0,
@@ -143,6 +147,8 @@ export default function DashboardPage() {
     },
   ];
 
+  const statCards = [curationCard, ...(showAppStats ? appCards : [])];
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -162,7 +168,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stat Cards */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className={`mb-8 grid gap-4 ${showAppStats ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-1 lg:grid-cols-1 max-w-sm'}`}>
         {statCards.map((card) => (
           <div
             key={card.label}

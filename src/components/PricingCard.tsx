@@ -1,6 +1,6 @@
 'use client';
 
-type Tier = 'free' | 'active' | 'beast';
+type Tier = 'free' | 'job_hunting' | 'beast';
 
 interface PricingCardProps {
   currentTier: Tier;
@@ -14,6 +14,7 @@ interface PlanInfo {
   period: string;
   curations: string;
   features: string[];
+  antiFeatures: string[];
   highlighted: boolean;
 }
 
@@ -27,43 +28,55 @@ const plans: PlanInfo[] = [
     features: [
       '3 resume-to-JD curations per month',
       'Fit score & go/no-go analysis',
-      'Salary range detection',
+      'Basic resume tailoring per role',
       'Basic gap analysis',
-      'Application tracking',
+      'PDF resume download',
+    ],
+    antiFeatures: [
+      'No salary research',
+      'No application tracking',
+      'No resume storage',
+      'No ATS formatting',
     ],
     highlighted: false,
   },
   {
-    tier: 'active',
-    name: 'Active',
-    price: '$5',
+    tier: 'job_hunting',
+    name: 'Job Hunting',
+    price: '$6',
     period: '/month',
     curations: '25 curations/month',
     features: [
       '25 resume-to-JD curations per month',
       'Everything in Free',
-      'ResumeForge ATS formatting',
+      'ResumeForge ATS optimized formatting',
+      'Fair market salary research',
       'Detailed skill gap breakdown',
+      'Application tracking',
       'Priority analysis queue',
       'Export curations to PDF',
     ],
+    antiFeatures: [],
     highlighted: true,
   },
   {
     tier: 'beast',
-    name: 'Beast',
-    price: '$25',
+    name: 'Beast Mode',
+    price: '$24',
     period: '/month',
-    curations: 'Unlimited curations',
+    curations: 'UNLIMITED curations',
     features: [
-      'Unlimited curations per month',
-      'Everything in Active',
-      'Bulk curation mode',
+      'UNLIMITED curations per month',
+      'Everything in Job Hunting',
+      'Bulk curation mode (5 JDs at once)',
       'Custom resume tailoring per role',
-      'Advanced salary negotiation insights',
-      'API access',
+      'Company tone matching',
+      'Advanced salary research & negotiation insights',
+      'Resume Recall — save & download anytime',
+      'Cover letter creation & curation',
       'Priority support',
     ],
+    antiFeatures: [],
     highlighted: false,
   },
 ];
@@ -120,6 +133,26 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
                 </li>
               ))}
             </ul>
+
+            {/* Anti-features */}
+            {plan.antiFeatures.length > 0 && (
+              <ul className="mb-8 space-y-2 border-t border-slate-100 pt-3">
+                {plan.antiFeatures.map((af, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-400">
+                    <svg
+                      className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    {af}
+                  </li>
+                ))}
+              </ul>
+            )}
 
             <button
               onClick={() => onSelectTier(plan.tier)}

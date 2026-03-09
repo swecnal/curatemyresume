@@ -26,7 +26,7 @@ interface ApplicationDetail {
   appliedDate: string | null;
   notes: string;
   tailoredResume: string | null;
-  tier: 'free' | 'active' | 'beast';
+  tier: 'free' | 'job_hunting' | 'beast';
   createdAt: string;
 }
 

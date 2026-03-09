@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { tailorResume } from "@/lib/claude";
+import { canAccess } from "@/lib/tier-features";
+import type { JDAnalysis, CompanyType } from "@/lib/claude";
 
 export async function POST(request: Request) {
   try {
@@ -12,60 +14,84 @@ export async function POST(request: Request) {
     }
 
     const userId = session.user.cmr_user_id;
+    const tier = session.user.tier;
 
-    // Beast mode tier check
-    if (session.user.tier !== "beast") {
+    // Tier check: basicTailoring is required
+    if (!canAccess(tier, "basicTailoring")) {
       return NextResponse.json(
-        { error: "Resume tailoring requires Beast Mode subscription" },
+        { error: "Resume tailoring is not available for your plan" },
         { status: 403 }
       );
     }
 
-    // Extract application_id from body
+    // Extract body
     const body = await request.json();
-    const { application_id } = body as { application_id: string };
+    const { application_id, company_type, resume_text, jd_text } = body as {
+      application_id?: string;
+      company_type?: string;
+      resume_text?: string;
+      jd_text?: string;
+    };
 
-    if (!application_id) {
+    let resolvedResumeText: string;
+    let resolvedJdText: string;
+    let fitAnalysis: JDAnalysis;
+    let resumeId: string | null = null;
+    let applicationIdForSave: string | null = null;
+
+    if (application_id) {
+      // Fetch the application (verify ownership)
+      const { data: application, error: appError } = await supabase
+        .from("cmr_applications")
+        .select("id, jd_text, analysis_json")
+        .eq("id", application_id)
+        .eq("user_id", userId)
+        .single();
+
+      if (appError || !application) {
+        return NextResponse.json(
+          { error: "Application not found" },
+          { status: 404 }
+        );
+      }
+
+      // Fetch user's active resume
+      const { data: resume, error: resumeError } = await supabase
+        .from("cmr_resumes")
+        .select("id, raw_text, parsed_profile")
+        .eq("user_id", userId)
+        .eq("is_active", true)
+        .maybeSingle();
+
+      if (resumeError) {
+        console.error("Error fetching resume:", resumeError);
+        return NextResponse.json(
+          { error: "Failed to fetch resume" },
+          { status: 500 }
+        );
+      }
+
+      if (!resume) {
+        return NextResponse.json(
+          { error: "No resume on file" },
+          { status: 400 }
+        );
+      }
+
+      resolvedResumeText = resume.raw_text;
+      resolvedJdText = application.jd_text;
+      fitAnalysis = application.analysis_json;
+      resumeId = resume.id;
+      applicationIdForSave = application.id;
+    } else if (resume_text && resume_text.trim().length > 0 && jd_text && jd_text.trim().length > 0) {
+      // Ephemeral mode: use provided texts directly
+      resolvedResumeText = resume_text;
+      resolvedJdText = jd_text;
+      // Minimal fit analysis for the prompt — no DB application
+      fitAnalysis = {} as JDAnalysis;
+    } else {
       return NextResponse.json(
-        { error: "application_id is required" },
-        { status: 400 }
-      );
-    }
-
-    // Fetch the application (verify ownership)
-    const { data: application, error: appError } = await supabase
-      .from("cmr_applications")
-      .select("id, jd_text, analysis_json")
-      .eq("id", application_id)
-      .eq("user_id", userId)
-      .single();
-
-    if (appError || !application) {
-      return NextResponse.json(
-        { error: "Application not found" },
-        { status: 404 }
-      );
-    }
-
-    // Fetch user's active resume
-    const { data: resume, error: resumeError } = await supabase
-      .from("cmr_resumes")
-      .select("id, raw_text, parsed_profile")
-      .eq("user_id", userId)
-      .eq("is_active", true)
-      .maybeSingle();
-
-    if (resumeError) {
-      console.error("Error fetching resume:", resumeError);
-      return NextResponse.json(
-        { error: "Failed to fetch resume" },
-        { status: 500 }
-      );
-    }
-
-    if (!resume) {
-      return NextResponse.json(
-        { error: "No resume on file" },
+        { error: "Either application_id or both resume_text and jd_text are required" },
         { status: 400 }
       );
     }
@@ -77,40 +103,55 @@ export async function POST(request: Request) {
       .eq("id", userId)
       .single();
 
-    // Call Claude to tailor the resume for this specific JD
+    // Only pass company_type if tier supports company tone matching
+    const resolvedCompanyType = canAccess(tier, "companyToneMatching") && company_type
+      ? company_type as CompanyType
+      : undefined;
+
+    // Call Claude to tailor the resume
     const tailored = await tailorResume(
-      resume.raw_text,
-      application.jd_text,
-      application.analysis_json,
+      resolvedResumeText,
+      resolvedJdText,
+      fitAnalysis,
       {
         strong_skills: userProfile?.strong_skills ?? undefined,
         developing_skills: userProfile?.developing_skills ?? undefined,
-      }
+      },
+      resolvedCompanyType
     );
 
-    // Insert into cmr_tailored_resumes
-    const { data: tailoredRecord, error: insertError } = await supabase
-      .from("cmr_tailored_resumes")
-      .insert({
-        user_id: userId,
-        application_id: application.id,
-        resume_id: resume.id,
+    // Insert into cmr_tailored_resumes only if we have an application context
+    if (applicationIdForSave && resumeId) {
+      const { data: tailoredRecord, error: insertError } = await supabase
+        .from("cmr_tailored_resumes")
+        .insert({
+          user_id: userId,
+          application_id: applicationIdForSave,
+          resume_id: resumeId,
+          tailored_text: tailored.tailored_text,
+          changes_summary: tailored.changes_summary,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error("Error inserting tailored resume:", insertError);
+        return NextResponse.json(
+          { error: "Failed to save tailored resume" },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        id: tailoredRecord.id,
         tailored_text: tailored.tailored_text,
         changes_summary: tailored.changes_summary,
-      })
-      .select()
-      .single();
-
-    if (insertError) {
-      console.error("Error inserting tailored resume:", insertError);
-      return NextResponse.json(
-        { error: "Failed to save tailored resume" },
-        { status: 500 }
-      );
+      });
     }
 
+    // Ephemeral mode: return tailored text without saving
     return NextResponse.json({
-      id: tailoredRecord.id,
+      id: null,
       tailored_text: tailored.tailored_text,
       changes_summary: tailored.changes_summary,
     });
