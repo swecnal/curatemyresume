@@ -68,7 +68,6 @@ const config: NextAuthConfig = {
             name: user.name ?? user.email,
             avatar_url: user.image ?? null,
             provider: account.provider,
-            provider_account_id: account.providerAccountId,
             tier: "free",
             curations_this_month: 0,
             current_period_start: new Date().toISOString(),
