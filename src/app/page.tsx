@@ -178,40 +178,50 @@ function LandingPricingClientSection() {
       curations: '3 curations/month',
       features: [
         '3 resume-to-JD curations per month',
-        'Fit score & go/no-go analysis',
-        'Salary range detection',
+        'Fit score & go/no-go verdict',
         'Basic gap analysis',
-        'Application tracking',
+        'Basic tailoring suggestions',
+        'PDF export',
+      ],
+      antiFeatures: [
+        'No salary research',
+        'No application tracking',
+        'No resume storage',
+        'No ATS formatting',
       ],
       highlighted: false,
     },
     {
-      name: 'Active',
-      price: '$5',
+      name: 'Job Hunting',
+      price: '$6',
       period: '/month',
       curations: '25 curations/month',
       features: [
         '25 resume-to-JD curations per month',
         'Everything in Free',
         'ResumeForge ATS formatting',
+        'Fair market salary research',
         'Detailed skill gap breakdown',
+        'Application tracking',
         'Priority analysis queue',
-        'Export curations to PDF',
+        'PDF export',
       ],
       highlighted: true,
     },
     {
-      name: 'Beast',
-      price: '$25',
+      name: 'Beast Mode',
+      price: '$24',
       period: '/month',
       curations: 'Unlimited curations',
       features: [
         'Unlimited curations per month',
-        'Everything in Active',
-        'Bulk curation mode',
+        'Everything in Job Hunting',
+        'Bulk curation (5 JDs at once)',
         'Custom resume tailoring per role',
-        'Advanced salary negotiation insights',
-        'API access',
+        'Company tone matching',
+        'Advanced salary + negotiation insights',
+        'Resume Recall (stored resumes)',
+        'Cover letter creation',
         'Priority support',
       ],
       highlighted: false,
@@ -259,6 +269,20 @@ function LandingPricingClientSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                 </svg>
                 {feature}
+              </li>
+            ))}
+            {plan.antiFeatures?.map((af, i) => (
+              <li key={`anti-${i}`} className="flex items-start gap-2 text-sm text-slate-400">
+                <svg
+                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                {af}
               </li>
             ))}
           </ul>
