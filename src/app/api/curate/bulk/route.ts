@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     // Tier gate: bulkCuration required
     if (!canAccess(tier, "bulkCuration")) {
       return NextResponse.json(
-        { error: "Bulk curation requires Beast Mode subscription" },
+        { error: "Bulk curation requires PhD Mode subscription" },
         { status: 403 }
       );
     }

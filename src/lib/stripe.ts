@@ -49,7 +49,7 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
     curationsPerMonth: 25,
   },
   beast: {
-    name: "Beast Mode",
+    name: "PhD Mode",
     priceId: process.env.STRIPE_PRICE_BEAST ?? "price_beast_placeholder",
     monthlyPrice: 24,
     curationsPerMonth: null,

@@ -44,7 +44,7 @@ const tierBreakdowns = [
       'Companies use ATS systems that auto-reject up to 75% of applicants before a human ever sees their resume. ResumeRx formats your resume to get past the bots. Salary research ensures you never lowball yourself.',
   },
   {
-    name: 'Beast Mode ⚡',
+    name: 'PhD Mode \ud83c\udf93',
     price: '$24/mo',
     color: 'border-violet-200',
     bg: 'bg-violet-50/20',
@@ -60,7 +60,7 @@ const tierBreakdowns = [
     whoItsFor:
       'Serious job hunters who want total coverage. You\'re applying aggressively, targeting multiple companies, and need every edge possible.',
     whyItMatters:
-      'Every role gets a perfectly tailored resume and cover letter. Bulk analysis means you diagnose an entire week\'s worth of applications in minutes. Salary negotiation intel alone can pay for months of Beast Mode with a single offer.',
+      'Every role gets a perfectly tailored resume and cover letter. Bulk analysis means you diagnose an entire week\'s worth of applications in minutes. Salary negotiation intel alone can pay for months of PhD Mode with a single offer.',
   },
 ];
 

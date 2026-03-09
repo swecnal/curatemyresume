@@ -10,9 +10,9 @@ interface Stat {
 }
 
 const stats: Stat[] = [
-  { value: 42, suffix: '+', label: 'Applications per Interview', sublabel: 'Average in 2026' },
-  { value: 250, suffix: '+', label: 'Applications per Offer', sublabel: 'Per corporate posting' },
-  { value: 11, suffix: '+', label: 'Hours/Week Editing Resumes', sublabel: 'Active job seekers' },
+  { value: 42, suffix: '+', label: 'Applications to\nget an Interview', sublabel: 'Average in 2026' },
+  { value: 267, suffix: '+', label: 'Applications to\nget an Offer', sublabel: 'Per corporate posting' },
+  { value: 11, suffix: '+', label: 'Hours/Week Editing\nResumes & Applying', sublabel: 'Active job seekers' },
   { value: 45, suffix: '+', label: 'Applications per Week', sublabel: 'To stay competitive' },
   { value: 12, suffix: '%', label: 'Actually Get a Rejection', sublabel: 'The rest? Ghosted.' },
   { value: 86, suffix: '%', label: 'Never Hear Back at All', sublabel: 'Your resume vanished' },
@@ -49,13 +49,13 @@ function StatCard({ stat, index, visible }: { stat: Stat; index: number; visible
   const count = useCountUp(stat.value, 1800 + index * 200, visible);
 
   return (
-    <div className="group relative rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="group relative rounded-2xl border border-slate-200/60 bg-white/80 p-6 text-center shadow-sm transition-all duration-300 hover:shadow-md">
       <div className="text-4xl font-extrabold tracking-tight text-indigo-600 sm:text-5xl">
         {count}
         <span className="text-indigo-400">{stat.suffix}</span>
       </div>
-      <p className="mt-2 text-sm font-semibold text-slate-900">{stat.label}</p>
-      <p className="mt-1 text-xs text-slate-500">{stat.sublabel}</p>
+      <p className="mt-2 whitespace-pre-line text-sm font-semibold text-slate-900">{stat.label}</p>
+      <p className="mt-1 text-xs text-slate-400">({stat.sublabel})</p>
     </div>
   );
 }
@@ -83,11 +83,14 @@ export default function StatsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="border-t border-slate-200 bg-slate-50 py-24">
+    <section ref={sectionRef} className="border-t border-slate-200 bg-gradient-to-br from-slate-100 via-indigo-50/40 to-slate-100 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
-            The Job Market Is Brutal. Take Back Control.
+            The Job Market Is{' '}
+            <span className="text-red-500">Brutal</span>.{' '}
+            Take Back{' '}
+            <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Control</span>.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
             In 2026, the average job seeker submits over 250 applications before landing an offer.
@@ -103,7 +106,7 @@ export default function StatsSection() {
           ))}
         </div>
 
-        <p className="mx-auto mt-12 max-w-2xl text-center text-sm leading-relaxed text-slate-500">
+        <p className="mx-auto mt-12 max-w-2xl text-center text-sm leading-relaxed text-slate-400">
           Sources: LinkedIn Economic Graph 2025, Jobvite Recruiter Nation Survey 2025,
           Bureau of Labor Statistics. ResumeMD time savings based on average user data.
         </p>

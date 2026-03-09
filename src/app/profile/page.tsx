@@ -275,7 +275,7 @@ export default function ProfilePage() {
   const tierConfig: Record<string, { label: string; classes: string }> = {
     free: { label: 'Free', classes: 'bg-slate-100 text-slate-700' },
     active: { label: 'Active', classes: 'bg-indigo-100 text-indigo-700' },
-    beast: { label: 'Beast', classes: 'bg-violet-100 text-violet-700' },
+    beast: { label: 'PhD', classes: 'bg-violet-100 text-violet-700' },
   };
   const currentTierConfig = tierConfig[profile.tier] ?? tierConfig.free;
 

@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     // Beast tier check
     if (!canAccess(session.user.tier, "coverLetter")) {
       return NextResponse.json(
-        { error: "Cover letter creation requires Beast Mode" },
+        { error: "Cover letter creation requires PhD Mode" },
         { status: 403 }
       );
     }

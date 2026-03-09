@@ -57,7 +57,7 @@ export interface JDAnalysis {
   market_salary_min?: number;
   market_salary_max?: number;
   market_salary_notes?: string;
-  // Advanced salary (Beast)
+  // Advanced salary (PhD)
   negotiation_leverage?: string[];
   equity_benchmark?: string;
   bonus_benchmark?: string;
@@ -363,7 +363,7 @@ Return ONLY the formatted resume text — no commentary, no JSON wrapper, no mar
 }
 
 // ---------------------------------------------------------------------------
-// 4. tailorResume (Beast Mode — JD-optimized)
+// 4. tailorResume (PhD Mode — JD-optimized)
 // ---------------------------------------------------------------------------
 
 export interface TailoredResume {
@@ -406,7 +406,7 @@ The target company is a ${companyType} environment. Adjust the resume tone accor
 Infer the company type from the JD's language, company description, and industry signals, then adjust the resume tone to match. Consider whether the language suggests startup, enterprise, agency, government, or nonprofit culture.`
     : "";
 
-  const systemPrompt = `You are ResumeTailor, an elite career strategist who optimizes resumes for specific job descriptions. You operate in Beast Mode — every word earns its place.
+  const systemPrompt = `You are ResumeTailor, an elite career strategist who optimizes resumes for specific job descriptions. You operate in PhD Mode — every word earns its place.
 
 YOUR MISSION:
 Take the candidate's resume and rewrite it to maximize fit for the provided job description, informed by the fit analysis.
@@ -454,7 +454,7 @@ Respond with ONLY valid JSON (no markdown, no code blocks):
 }
 
 // ---------------------------------------------------------------------------
-// 5. curateCoverLetter (Beast Mode)
+// 5. curateCoverLetter (PhD Mode)
 // ---------------------------------------------------------------------------
 
 export type CoverLetterTone = "professional" | "conversational" | "enthusiastic" | "formal";

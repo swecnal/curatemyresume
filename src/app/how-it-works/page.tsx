@@ -11,7 +11,7 @@ const steps = [
     number: '02',
     title: 'Add a Job Listing',
     description:
-      'Paste a job description or link directly to the posting. We analyze every requirement, qualification, and keyword the recruiter is looking for. With Beast Mode, diagnose multiple roles at once.',
+      'Paste a job description or link directly to the posting. We analyze every requirement, qualification, and keyword the recruiter is looking for. With PhD Mode, diagnose multiple roles at once.',
   },
   {
     number: '03',
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
             </div>
             <div className="rounded-xl border border-violet-100 bg-gradient-to-r from-violet-50/50 to-white p-6">
               <p className="text-base leading-relaxed text-slate-700">
-                With <strong className="font-bold text-slate-900">Beast Mode</strong>, you get unlimited
+                With <strong className="font-bold text-slate-900">PhD Mode</strong>, you get unlimited
                 diagnoses, bulk analysis of multiple roles at once, custom resume tailoring per position,
                 optimized cover letters, salary negotiation talking points, and stored resume history. It&apos;s
                 everything you need to <strong className="font-bold text-slate-900">apply to every role with

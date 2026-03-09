@@ -61,7 +61,7 @@ const plans: PlanInfo[] = [
   },
   {
     tier: 'beast',
-    name: 'Beast Mode',
+    name: 'PhD Mode',
     price: '$24',
     period: '/month',
     curations: 'UNLIMITED curations',
@@ -89,7 +89,7 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
         return (
           <div
             key={plan.tier}
-            className={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:scale-[1.20] hover:shadow-lg ${
+            className={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:z-10 hover:scale-[1.20] hover:shadow-lg ${
               plan.highlighted
                 ? 'border-indigo-300 bg-white ring-2 ring-indigo-500'
                 : 'border-slate-200 bg-white'
@@ -157,12 +157,12 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
             <button
               onClick={() => onSelectTier(plan.tier)}
               disabled={isCurrent}
-              className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${
+              className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                 isCurrent
                   ? 'cursor-not-allowed border border-slate-200 bg-slate-50 text-slate-400'
                   : plan.highlighted
-                  ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                  : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                  ? 'bg-indigo-600 text-white hover:scale-105 hover:bg-indigo-500 hover:shadow-md'
+                  : 'border border-slate-300 bg-white text-slate-700 hover:scale-105 hover:border-slate-200 hover:bg-slate-50 hover:shadow-md'
               }`}
             >
               {isCurrent ? 'Current Plan' : 'Upgrade'}

@@ -17,7 +17,7 @@ export async function GET(
     // Tier gate
     if (!canAccess(session.user.tier, "applicationTracking")) {
       return NextResponse.json(
-        { error: "Application tracking requires Job Hunting or Beast Mode" },
+        { error: "Application tracking requires Job Hunting or PhD Mode" },
         { status: 403 }
       );
     }
@@ -63,7 +63,7 @@ export async function PATCH(
     // Tier gate
     if (!canAccess(session.user.tier, "applicationTracking")) {
       return NextResponse.json(
-        { error: "Application tracking requires Job Hunting or Beast Mode" },
+        { error: "Application tracking requires Job Hunting or PhD Mode" },
         { status: 403 }
       );
     }

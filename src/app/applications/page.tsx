@@ -72,7 +72,7 @@ export default function ApplicationsPage() {
         </svg>
         <h2 className="mt-4 text-xl font-bold text-slate-900">Application Tracking</h2>
         <p className="mt-2 text-sm text-slate-500">
-          Track your applications, interviews, and offers with Job Hunting or Beast Mode.
+          Track your applications, interviews, and offers with Job Hunting or PhD Mode.
         </p>
         <Link
           href="/pricing"

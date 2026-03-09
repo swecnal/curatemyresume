@@ -18,7 +18,7 @@ const tierConfig: Record<UsageMeterProps['tier'], { label: string; barColor: str
     badgeClasses: 'bg-indigo-100 text-indigo-700',
   },
   beast: {
-    label: 'Beast',
+    label: 'PhD',
     barColor: 'bg-violet-500',
     badgeClasses: 'bg-violet-100 text-violet-700',
   },

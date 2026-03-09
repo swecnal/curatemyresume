@@ -71,7 +71,7 @@ export default function LandingPage() {
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
               <span className="block">Stop Guessing.</span>
-              <span className="block bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400 bg-clip-text pb-2 text-transparent">
                 Start Landing.
               </span>
             </h1>
@@ -99,12 +99,16 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Stats */}
+      <StatsSection />
+
       {/* Features */}
       <section id="features" className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
-              Everything You Need to Land the Right Role
+              Everything You Need to Land{' '}
+              <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">the Right Role</span>
             </h2>
             <p className="mt-4 text-lg text-slate-600">
               From instant fitness checks to ATS-ready formatting, ResumeMD gives you
@@ -176,7 +180,7 @@ export default function LandingPage() {
               </div>
             </Link>
 
-            {/* Beast Mode */}
+            {/* PhD Mode */}
             <Link href="/signup" className="group">
               <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
@@ -186,29 +190,25 @@ export default function LandingPage() {
                     <rect x="14" y="10" width="20" height="28" rx="2" fill="#ede9fe" stroke="#8b5cf6" strokeWidth="1" opacity="0.6" />
                     <rect x="11" y="7" width="20" height="28" rx="2" fill="#ede9fe" stroke="#8b5cf6" strokeWidth="1" opacity="0.8" />
                     <rect x="8" y="4" width="20" height="28" rx="2" fill="#ede9fe" stroke="#8b5cf6" strokeWidth="1.5" />
-                    {/* Lightning bolt */}
-                    <polygon points="30,2 22,22 30,22 20,44 38,18 28,18" fill="#8b5cf6" />
-                    <polygon points="30,2 22,22 30,22 20,44 38,18 28,18" fill="url(#beastGrad)" />
-                    <defs>
-                      <linearGradient id="beastGrad" x1="20" y1="2" x2="38" y2="44">
-                        <stop offset="0%" stopColor="#8b5cf6" />
-                        <stop offset="100%" stopColor="#6366f1" />
-                      </linearGradient>
-                    </defs>
+                    {/* Graduation cap */}
+                    <polygon points="30,8 20,14 30,20 40,14" fill="#8b5cf6" />
+                    <line x1="30" y1="20" x2="30" y2="28" stroke="#8b5cf6" strokeWidth="1.5" />
+                    <path d="M23 16 L23 24 Q26.5 27 30 24" stroke="#8b5cf6" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                    <circle cx="30" cy="28" r="1.5" fill="#8b5cf6" />
                   </svg>
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-slate-900">
-                  Beast Mode <span className="ml-1">&#9889;</span>
+                  PhD Mode <span className="ml-1">&#127891;</span>
                 </h3>
                 <p className="flex-1 text-sm leading-relaxed text-slate-600">
                   <strong className="text-slate-900">Unlimited</strong> diagnoses. Bulk-analyze
                   multiple roles at a time. Custom tailoring per position. Optimized cover letters.
                   Salary negotiation intel. Total job hunt domination.
                 </p>
-                {/* Hover CTA — bolder for Beast Mode */}
+                {/* Hover CTA — bolder for PhD Mode */}
                 <div className="mt-6 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                   <span className="inline-block rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm">
-                    Unleash Beast Mode
+                    Activate PhD Mode
                   </span>
                 </div>
               </div>
@@ -216,9 +216,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Stats */}
-      <StatsSection />
 
       {/* Pricing */}
       <section id="pricing" className="border-t border-slate-200 bg-white py-24">
@@ -241,7 +238,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Ready to Diagnose Your Next Opportunity?
+            Ready for your <span className="bg-gradient-to-r from-indigo-200 via-blue-200 to-cyan-200 bg-clip-text text-transparent">Diagnosis</span>?
           </h2>
           <p className="mt-5 text-lg text-indigo-100">
             Upload your resume. Add a job listing. Get your diagnosis in seconds.
@@ -273,7 +270,7 @@ export default function LandingPage() {
 function LandingPricingSection() {
   const plans = [
     {
-      name: 'Free',
+      name: 'Free \ud83c\udf89',
       price: '$0',
       period: '',
       curations: '3 diagnoses/month',
@@ -292,10 +289,10 @@ function LandingPricingSection() {
       ],
       highlighted: false,
       cta: 'Get Started Free',
-      ctaStyle: 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50',
+      ctaStyle: 'border border-slate-300 bg-white text-slate-700 hover:scale-105 hover:border-slate-200 hover:bg-slate-50 hover:shadow-md',
     },
     {
-      name: 'Job Hunting',
+      name: 'Job Hunting \ud83d\udd0d',
       price: '$6',
       period: '/month',
       curations: '25 diagnoses/month',
@@ -311,10 +308,10 @@ function LandingPricingSection() {
       ],
       highlighted: true,
       cta: 'Find Your New Job',
-      ctaStyle: 'bg-indigo-600 text-white hover:bg-indigo-700',
+      ctaStyle: 'bg-indigo-600 text-white hover:scale-105 hover:bg-indigo-500 hover:shadow-md',
     },
     {
-      name: 'Beast Mode ⚡',
+      name: 'PhD Mode \ud83c\udf93',
       price: '$24',
       period: '/month',
       curations: 'Unlimited diagnoses',
@@ -330,8 +327,8 @@ function LandingPricingSection() {
         'Priority support',
       ],
       highlighted: false,
-      cta: 'Go Beast Mode ⚡',
-      ctaStyle: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700',
+      cta: 'Go PhD Mode \ud83c\udf93',
+      ctaStyle: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:scale-105 hover:from-violet-500 hover:to-indigo-500 hover:shadow-md',
     },
   ];
 
@@ -340,7 +337,7 @@ function LandingPricingSection() {
       {plans.map((plan) => (
         <div
           key={plan.name}
-          className={`group relative flex flex-col rounded-2xl border shadow-sm transition-all duration-300 hover:scale-[1.20] hover:shadow-lg ${
+          className={`group relative flex flex-col rounded-2xl border shadow-sm transition-all duration-300 hover:z-10 hover:scale-[1.20] hover:shadow-lg ${
             plan.highlighted
               ? 'scale-105 border-indigo-300 bg-indigo-50 p-8 ring-2 ring-indigo-500'
               : 'border-slate-200 bg-white p-6'
@@ -407,7 +404,7 @@ function LandingPricingSection() {
           </ul>
           <Link
             href="/signup"
-            className={`block w-full rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-all ${plan.ctaStyle}`}
+            className={`block w-full rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-all duration-200 ${plan.ctaStyle}`}
           >
             {plan.cta}
           </Link>
