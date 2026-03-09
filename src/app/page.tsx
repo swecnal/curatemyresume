@@ -1,41 +1,66 @@
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import StatsSection from '@/components/StatsSection';
 
 export default function LandingPage() {
   return (
     <div className="bg-white">
       {/* Hero — Dark gradient with floating shapes */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
-        {/* Decorative floating shapes */}
+        {/* Decorative floating shapes — high contrast, recognizable */}
         <div className="pointer-events-none absolute inset-0">
-          {/* Stethoscope curve — top right */}
-          <svg className="absolute -right-12 -top-8 opacity-[0.07]" width="400" height="400" viewBox="0 0 400 400" fill="none">
-            <path d="M50 50 C50 150, 150 200, 200 250 C250 300, 350 300, 350 200" stroke="#818cf8" strokeWidth="3" strokeLinecap="round" />
-            <circle cx="350" cy="200" r="30" stroke="#818cf8" strokeWidth="3" />
-            <circle cx="350" cy="200" r="15" stroke="#818cf8" strokeWidth="2" />
+          {/* Stethoscope — top right */}
+          <svg className="absolute -right-4 -top-4 opacity-[0.14]" width="360" height="360" viewBox="0 0 360 360" fill="none">
+            {/* Earpieces */}
+            <circle cx="100" cy="40" r="14" stroke="#a5b4fc" strokeWidth="3" />
+            <circle cx="160" cy="40" r="14" stroke="#a5b4fc" strokeWidth="3" />
+            {/* Tubing from earpieces down to Y-junction */}
+            <path d="M100 54 C100 100, 120 120, 130 140" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
+            <path d="M160 54 C160 100, 140 120, 130 140" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
+            {/* Single tube down to chest piece */}
+            <path d="M130 140 C130 200, 130 240, 200 260 C240 270, 260 250, 260 220" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
+            {/* Chest piece (bell) */}
+            <circle cx="260" cy="200" r="28" stroke="#818cf8" strokeWidth="3.5" />
+            <circle cx="260" cy="200" r="14" fill="#818cf8" opacity="0.2" />
           </svg>
-          {/* Document outline — bottom left */}
-          <svg className="absolute -bottom-16 -left-8 opacity-[0.06]" width="300" height="380" viewBox="0 0 300 380" fill="none">
-            <rect x="40" y="20" width="200" height="280" rx="12" stroke="#6366f1" strokeWidth="2" />
-            <rect x="70" y="60" width="120" height="8" rx="4" fill="#6366f1" opacity="0.3" />
-            <rect x="70" y="85" width="100" height="8" rx="4" fill="#6366f1" opacity="0.2" />
-            <rect x="70" y="110" width="140" height="8" rx="4" fill="#6366f1" opacity="0.2" />
-            <rect x="70" y="135" width="80" height="8" rx="4" fill="#6366f1" opacity="0.15" />
+
+          {/* Resume document — bottom left */}
+          <svg className="absolute -bottom-10 -left-4 opacity-[0.13]" width="280" height="340" viewBox="0 0 280 340" fill="none">
+            {/* Page with folded corner */}
+            <path d="M40 20 H200 L230 50 V300 Q230 310 220 310 H50 Q40 310 40 300 Z" stroke="#a5b4fc" strokeWidth="2.5" fill="none" />
+            <path d="M200 20 V50 H230" stroke="#a5b4fc" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
+            {/* Photo placeholder */}
+            <rect x="60" y="50" width="40" height="48" rx="4" stroke="#818cf8" strokeWidth="2" fill="#818cf8" opacity="0.1" />
+            {/* Name line */}
+            <rect x="115" y="55" width="90" height="8" rx="4" fill="#a5b4fc" opacity="0.4" />
+            {/* Subtitle line */}
+            <rect x="115" y="72" width="65" height="6" rx="3" fill="#a5b4fc" opacity="0.25" />
+            {/* Section header */}
+            <rect x="60" y="120" width="50" height="6" rx="3" fill="#818cf8" opacity="0.35" />
+            {/* Text lines */}
+            <rect x="60" y="140" width="150" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
+            <rect x="60" y="155" width="130" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
+            <rect x="60" y="170" width="145" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
+            {/* Section header 2 */}
+            <rect x="60" y="200" width="60" height="6" rx="3" fill="#818cf8" opacity="0.35" />
+            {/* More text lines */}
+            <rect x="60" y="220" width="140" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
+            <rect x="60" y="235" width="120" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
+            <rect x="60" y="250" width="150" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
           </svg>
-          {/* Dots grid — center */}
-          <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.04]" width="600" height="400" viewBox="0 0 600 400">
-            {Array.from({ length: 8 }).map((_, row) =>
-              Array.from({ length: 12 }).map((_, col) => (
-                <circle key={`${row}-${col}`} cx={col * 50 + 25} cy={row * 50 + 25} r="2" fill="#818cf8" />
-              ))
-            )}
+
+          {/* Target/bullseye — center right (fit score) */}
+          <svg className="absolute right-1/4 top-1/2 -translate-y-1/2 opacity-[0.08]" width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="80" stroke="#818cf8" strokeWidth="2" />
+            <circle cx="100" cy="100" r="55" stroke="#818cf8" strokeWidth="2" />
+            <circle cx="100" cy="100" r="30" stroke="#818cf8" strokeWidth="2" />
+            <circle cx="100" cy="100" r="10" fill="#818cf8" opacity="0.3" />
           </svg>
-          {/* Small stethoscope — left */}
-          <svg className="absolute left-16 top-32 opacity-[0.05]" width="120" height="120" viewBox="0 0 120 120" fill="none">
-            <circle cx="30" cy="20" r="8" stroke="#a5b4fc" strokeWidth="2" />
-            <circle cx="70" cy="20" r="8" stroke="#a5b4fc" strokeWidth="2" />
-            <path d="M30 28 C30 50, 50 55, 50 70 C50 80, 60 90, 80 85 C95 82, 95 70, 95 60" stroke="#a5b4fc" strokeWidth="2" strokeLinecap="round" />
-            <circle cx="95" cy="55" r="12" stroke="#a5b4fc" strokeWidth="2" />
+
+          {/* Checkmark badge — top left */}
+          <svg className="absolute left-12 top-20 opacity-[0.10]" width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="40" stroke="#a5b4fc" strokeWidth="2.5" />
+            <path d="M30 52 L44 66 L72 38" stroke="#a5b4fc" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
 
@@ -59,7 +84,7 @@ export default function LandingPage() {
             <div className="mt-10">
               <Link
                 href="/try"
-                className="inline-block rounded-lg bg-white px-8 py-3.5 text-sm font-bold text-indigo-700 shadow-lg shadow-indigo-500/25 transition-all hover:bg-indigo-50 hover:shadow-xl hover:shadow-indigo-500/30"
+                className="inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl hover:shadow-indigo-500/30"
               >
                 Get Your Free Diagnosis
               </Link>
@@ -192,6 +217,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Stats */}
+      <StatsSection />
+
       {/* Pricing */}
       <section id="pricing" className="border-t border-slate-200 bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -210,19 +238,19 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-20">
+      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-extrabold text-white">
+          <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
             Ready to Diagnose Your Next Opportunity?
           </h2>
-          <p className="mt-4 text-lg text-indigo-100">
-            Upload your resume. Paste a job description. Get your diagnosis in seconds.
+          <p className="mt-5 text-lg text-indigo-100">
+            Upload your resume. Add a job listing. Get your diagnosis in seconds.
           </p>
           <Link
             href="/try"
-            className="mt-8 inline-block rounded-lg bg-white px-8 py-3.5 text-sm font-bold text-indigo-700 shadow-sm transition-all hover:bg-indigo-50 hover:shadow-md"
+            className="mt-10 inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-black/20 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl hover:shadow-black/30"
           >
-            Get Your Free Diagnosis
+            Get Your Free Diagnosis &rarr;
           </Link>
         </div>
       </section>
