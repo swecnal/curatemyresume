@@ -45,15 +45,16 @@ export default function LandingPage() {
               AI-Powered Resume Diagnostics
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
-              Stop Guessing.{' '}
-              <span className="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="block">Stop Guessing.</span>
+              <span className="block bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">
                 Start Landing.
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-indigo-200">
-              Upload your resume and any job description — our AI diagnoses your fit,
-              identifies your gaps, and rewrites your resume to match each role perfectly.
-              Fit scores, salary insights, and a tailored resume in seconds.
+              Upload your resume and any job listing — our ResumeMD utilizes cutting-edge AI
+              to diagnose your fit, identifies your gaps, and rewrites your resume &amp; cover
+              letter to match each role <em className="italic">perfectly</em>. Fit scores,
+              salary insights, and a tailored resume in seconds.
             </p>
             <div className="mt-10">
               <Link
@@ -81,14 +82,14 @@ export default function LandingPage() {
               Everything You Need to Land the Right Role
             </h2>
             <p className="mt-4 text-lg text-slate-600">
-              From instant fit analysis to ATS-ready formatting, Resume MD gives you
+              From instant fitness checks to ATS-ready formatting, ResumeMD gives you
               the edge in every application.
             </p>
           </div>
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 md:grid-cols-3">
-            {/* Fit Analysis */}
+            {/* Fitness Check */}
             <Link href="/try" className="group">
-              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-lg">
+              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50">
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
@@ -105,7 +106,7 @@ export default function LandingPage() {
                     <rect x="23" y="25" width="6" height="2" rx="1" fill="#c7d2fe" />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">Fit Analysis</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">Fitness Check</h3>
                 <p className="flex-1 text-sm leading-relaxed text-slate-600">
                   Instant fit score, go/no-go verdict, and a skill-by-skill breakdown before
                   you waste time applying. Know exactly where you stand.
@@ -119,9 +120,9 @@ export default function LandingPage() {
               </div>
             </Link>
 
-            {/* Resume Rx */}
+            {/* ResumeRx */}
             <Link href="/try" className="group">
-              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-lg">
+              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50">
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
@@ -136,7 +137,7 @@ export default function LandingPage() {
                     <text x="36" y="37" textAnchor="middle" fill="white" fontSize="13" fontWeight="700" fontFamily="serif">Rx</text>
                   </svg>
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">Resume Rx</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">ResumeRx</h3>
                 <p className="flex-1 text-sm leading-relaxed text-slate-600">
                   Your resume, prescribed for every ATS. Auto-formatted, keyword-optimized,
                   and ready to pass any Applicant Tracking System.
@@ -152,7 +153,7 @@ export default function LandingPage() {
 
             {/* Beast Mode */}
             <Link href="/signup" className="group">
-              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-lg">
+              <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-violet-50">
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
@@ -176,8 +177,8 @@ export default function LandingPage() {
                 </h3>
                 <p className="flex-1 text-sm leading-relaxed text-slate-600">
                   <strong className="text-slate-900">Unlimited</strong> diagnoses. Bulk-analyze
-                  5 roles at once. Custom tailoring per position. Cover letters. Salary negotiation
-                  intel. Total domination.
+                  multiple roles at a time. Custom tailoring per position. Optimized cover letters.
+                  Salary negotiation intel. Total job hunt domination.
                 </p>
                 {/* Hover CTA — bolder for Beast Mode */}
                 <div className="mt-6 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
@@ -233,7 +234,7 @@ export default function LandingPage() {
             <Logo size="sm" linkTo={false} />
           </div>
           <p className="mt-4 text-sm text-slate-500">
-            &copy; {new Date().getFullYear()} Resume MD. All rights reserved.
+            &copy; {new Date().getFullYear()} ResumeMD. All rights reserved.
           </p>
         </div>
       </footer>
@@ -273,7 +274,7 @@ function LandingPricingSection() {
       features: [
         '25 resume-to-JD diagnoses per month',
         'Everything in Free',
-        'Resume Rx — ATS formatting',
+        'ResumeRx — ATS formatting',
         'Fair market salary research',
         'Detailed skill gap breakdown',
         'Application tracking',
@@ -292,12 +293,12 @@ function LandingPricingSection() {
       features: [
         '**Unlimited** diagnoses per month',
         'Everything in Job Hunting',
-        'Bulk diagnosis (5 JDs at once)',
+        'Bulk diagnosis (multiple JDs at a time)',
         'Custom resume tailoring per role',
         'Company tone matching',
         'Advanced salary + negotiation insights',
         'Resume Recall (stored resumes)',
-        'Cover letter creation',
+        'Optimized cover letters',
         'Priority support',
       ],
       highlighted: false,
@@ -311,7 +312,7 @@ function LandingPricingSection() {
       {plans.map((plan) => (
         <div
           key={plan.name}
-          className={`relative flex flex-col rounded-2xl border shadow-sm ${
+          className={`group relative flex flex-col rounded-2xl border shadow-sm transition-all duration-300 hover:scale-[1.20] hover:shadow-lg ${
             plan.highlighted
               ? 'scale-105 border-indigo-300 bg-indigo-50 p-8 ring-2 ring-indigo-500'
               : 'border-slate-200 bg-white p-6'

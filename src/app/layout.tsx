@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Resume MD — AI Resume Diagnostics',
+  title: 'ResumeMD — AI Resume Diagnostics',
   description:
     'Stop guessing. Start landing. AI-powered resume diagnostics that tell you exactly how you fit every role.',
 };

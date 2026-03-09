@@ -44,6 +44,11 @@ export default function CuratePage() {
   const [bulkMode, setBulkMode] = useState(false);
   const [bulkJDs, setBulkJDs] = useState<string[]>(['']);
   const [bulkLoading, setBulkLoading] = useState(false);
+  const [bulkResults, setBulkResults] = useState<Array<{
+    result: CurationResult;
+    applicationId: string | null;
+    jobUrl?: string;
+  }> | null>(null);
 
   // Tier-derived flags
   const tier = usage?.tier ?? 'free';
@@ -275,6 +280,8 @@ export default function CuratePage() {
     if (validJDs.length === 0) return;
     setBulkLoading(true);
     setError(null);
+    setBulkResults(null);
+    setResult(null);
 
     try {
       const res = await fetch('/api/curate/bulk', {
@@ -288,11 +295,21 @@ export default function CuratePage() {
         throw new Error(data.error || 'Bulk curation failed.');
       }
 
-      // For now, show the first result
       const data = await res.json();
       if (data.results && data.results.length > 0) {
-        setResult(data.results[0].result);
-        setApplicationId(data.results[0].applicationId ?? null);
+        const allResults = data.results
+          .filter((r: { result?: CurationResult }) => r.result)
+          .map((r: { result: CurationResult; applicationId?: string; jobUrl?: string }) => ({
+            result: r.result,
+            applicationId: r.applicationId ?? null,
+            jobUrl: r.jobUrl,
+          }));
+        setBulkResults(allResults);
+        // Also set the first result for the detailed view
+        if (allResults.length > 0) {
+          setResult(allResults[0].result);
+          setApplicationId(allResults[0].applicationId ?? null);
+        }
       }
 
       if (usage) {
@@ -462,6 +479,69 @@ export default function CuratePage() {
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
+          </div>
+        )}
+
+        {/* Bulk Results Delivery */}
+        {bulkResults && bulkResults.length > 1 && (
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="border-b border-slate-200 px-6 py-4">
+              <h3 className="text-lg font-semibold text-slate-900">
+                Bulk Diagnosis Results ({bulkResults.length} roles)
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500">
+                Click a result to view full details below.
+              </p>
+            </div>
+            <ul className="divide-y divide-slate-100">
+              {bulkResults.map((br, idx) => (
+                <li key={idx} className="flex flex-wrap items-center gap-3 px-6 py-4">
+                  <button
+                    onClick={() => {
+                      setResult(br.result);
+                      setApplicationId(br.applicationId ?? null);
+                    }}
+                    className="flex items-center gap-2 text-sm font-medium text-slate-900 hover:text-indigo-600"
+                  >
+                    <svg className="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                    Resume.pdf
+                  </button>
+                  <span className="text-sm text-slate-400">|</span>
+                  <span className="text-sm text-slate-600">
+                    For <span className="font-medium">{br.result.role}</span> at{' '}
+                    <span className="font-medium">{br.result.company}</span>
+                  </span>
+                  <span className="text-sm text-slate-400">|</span>
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                    br.result.fitScore >= 7
+                      ? 'bg-green-100 text-green-700'
+                      : br.result.fitScore >= 4
+                      ? 'bg-amber-100 text-amber-700'
+                      : 'bg-red-100 text-red-700'
+                  }`}>
+                    {br.result.fitScore}/10
+                  </span>
+                  {br.jobUrl && (
+                    <>
+                      <span className="text-sm text-slate-400">|</span>
+                      <a
+                        href={br.jobUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                      >
+                        Apply Now
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                      </a>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     // Tier gate
     if (!canAccess(session.user.tier, "resumeForge")) {
       return NextResponse.json(
-        { error: "Resume Rx requires Job Hunting or Beast Mode subscription" },
+        { error: "ResumeRx requires Job Hunting or Beast Mode subscription" },
         { status: 403 }
       );
     }

@@ -322,7 +322,7 @@ export async function forgeResume(
   resumeText: string,
   parsedProfile: ParsedProfile
 ): Promise<ForgedResume> {
-  const systemPrompt = `You are Resume Rx, an expert ATS resume formatter. Your job is to reformat the candidate's resume into a clean, ATS-optimized format that will pass automated screening systems.
+  const systemPrompt = `You are ResumeRx, an expert ATS resume formatter. Your job is to reformat the candidate's resume into a clean, ATS-optimized format that will pass automated screening systems.
 
 TEMPLATE STRUCTURE:
 ${ATS_RESUME_TEMPLATE}

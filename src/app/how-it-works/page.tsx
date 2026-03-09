@@ -46,7 +46,7 @@ const features = [
   },
   {
     title: 'ATS Formatting',
-    description: 'Resume Rx reformats your resume to pass Applicant Tracking Systems.',
+    description: 'ResumeRx reformats your resume to pass Applicant Tracking Systems.',
   },
   {
     title: 'PDF Export',
@@ -61,7 +61,7 @@ export default function HowItWorksPage() {
       <section className="border-b border-slate-200 bg-gradient-to-br from-indigo-50 via-white to-blue-50 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            How Resume MD Works
+            How ResumeMD Works
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">
             Four simple steps from job posting to tailored application. No guesswork.

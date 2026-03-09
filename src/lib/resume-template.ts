@@ -1,5 +1,5 @@
 /**
- * ATS-optimized resume template used by Resume Rx.
+ * ATS-optimized resume template used by ResumeRx.
  *
  * Rules:
  * - ALL CAPS section headers

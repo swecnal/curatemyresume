@@ -49,7 +49,7 @@ const plans: PlanInfo[] = [
     features: [
       '25 resume-to-JD curations per month',
       'Everything in Free',
-      'Resume Rx ATS optimized formatting',
+      'ResumeRx ATS optimized formatting',
       'Fair market salary research',
       'Detailed skill gap breakdown',
       'Application tracking',
@@ -68,12 +68,12 @@ const plans: PlanInfo[] = [
     features: [
       'UNLIMITED curations per month',
       'Everything in Job Hunting',
-      'Bulk curation mode (5 JDs at once)',
+      'Bulk curation mode (multiple JDs at a time)',
       'Custom resume tailoring per role',
       'Company tone matching',
       'Advanced salary research & negotiation insights',
       'Resume Recall — save & download anytime',
-      'Cover letter creation & curation',
+      'Optimized cover letters',
       'Priority support',
     ],
     antiFeatures: [],
@@ -89,7 +89,7 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
         return (
           <div
             key={plan.tier}
-            className={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition-shadow hover:shadow-md ${
+            className={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:scale-[1.20] hover:shadow-lg ${
               plan.highlighted
                 ? 'border-indigo-300 bg-white ring-2 ring-indigo-500'
                 : 'border-slate-200 bg-white'

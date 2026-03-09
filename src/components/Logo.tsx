@@ -50,7 +50,7 @@ export default function Logo({ size = 'md', showText = true, linkTo = '/', light
       </svg>
       {showText && (
         <span className={`${s.font} font-bold ${lightText ? 'text-white' : 'text-slate-900'}`}>
-          Resume <span className={lightText ? 'text-indigo-300' : 'text-indigo-600'}>MD</span>
+          Resume<span className={lightText ? 'text-indigo-300' : 'text-indigo-600'}>MD</span>
         </span>
       )}
     </div>
