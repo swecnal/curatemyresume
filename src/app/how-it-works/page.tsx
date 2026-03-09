@@ -46,7 +46,7 @@ const features = [
   },
   {
     title: 'ATS Formatting',
-    description: 'ResumeForge reformats your resume to pass Applicant Tracking Systems.',
+    description: 'Resume Rx reformats your resume to pass Applicant Tracking Systems.',
   },
   {
     title: 'PDF Export',

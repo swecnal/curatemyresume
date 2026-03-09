@@ -49,7 +49,7 @@ const plans: PlanInfo[] = [
     features: [
       '25 resume-to-JD curations per month',
       'Everything in Free',
-      'ResumeForge ATS optimized formatting',
+      'Resume Rx ATS optimized formatting',
       'Fair market salary research',
       'Detailed skill gap breakdown',
       'Application tracking',
