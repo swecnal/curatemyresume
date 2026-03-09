@@ -3,40 +3,37 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { canAccess } from '@/lib/tier-features';
+import Logo from '@/components/Logo';
 
 export default function Nav() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const tier = session?.user?.tier ?? 'free';
-  const showApplications = canAccess(tier, 'applicationTracking');
+  const publicLinks = [
+    { href: '/how-it-works', label: 'How It Works' },
+  ];
 
-  const leftLinks = [
+  const authLinks = [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/resume', label: 'Resume' },
   ];
 
   const rightLinks = [
-    ...(showApplications ? [{ href: '/applications', label: 'Applications' }] : []),
     { href: '/pricing', label: 'Pricing' },
+    { href: '/company', label: 'Company' },
   ];
+
+  const navLinks = session?.user ? [...publicLinks, ...authLinks] : publicLinks;
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600">
-            <span className="text-sm font-bold text-white">C</span>
-          </div>
-          <span className="text-lg font-bold text-slate-900">CurateMyResume</span>
-        </Link>
+        <Logo size="md" />
 
-        {/* Desktop Links: left group, Curate CTA, right group */}
+        {/* Desktop Links */}
         <div className="hidden items-center gap-1 md:flex">
           {/* Left group */}
-          {leftLinks.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -46,12 +43,12 @@ export default function Nav() {
             </Link>
           ))}
 
-          {/* Curate CTA */}
+          {/* Diagnose CTA */}
           <Link
             href="/curate"
             className="mx-3 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
           >
-            Curate
+            Diagnose
           </Link>
 
           {/* Right group */}
@@ -97,12 +94,20 @@ export default function Nav() {
               </button>
             </div>
           ) : (
-            <Link
-              href="/login"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
-            >
-              Sign In
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/signup"
+                className="rounded-lg border border-indigo-600 px-4 py-2 text-sm font-medium text-indigo-600 transition-colors hover:bg-indigo-50"
+              >
+                Sign Up
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+              >
+                Sign In
+              </Link>
+            </div>
           )}
         </div>
 
@@ -128,17 +133,17 @@ export default function Nav() {
       {mobileOpen && (
         <div className="border-t border-slate-200 bg-white md:hidden">
           <div className="space-y-1 px-4 pb-4 pt-2">
-            {/* Curate CTA — full-width button at top */}
+            {/* Diagnose CTA */}
             <Link
               href="/curate"
               onClick={() => setMobileOpen(false)}
               className="block rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
             >
-              Curate
+              Diagnose
             </Link>
 
-            {/* Other nav links */}
-            {[...leftLinks, ...rightLinks].map((link) => (
+            {/* Nav links */}
+            {[...navLinks, ...rightLinks].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -183,13 +188,22 @@ export default function Nav() {
                   </button>
                 </>
               ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-700"
-                >
-                  Sign In
-                </Link>
+                <div className="space-y-2">
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg border border-indigo-600 px-4 py-2 text-center text-sm font-medium text-indigo-600 transition-colors hover:bg-indigo-50"
+                  >
+                    Sign Up
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+                  >
+                    Sign In
+                  </Link>
+                </div>
               )}
             </div>
           </div>

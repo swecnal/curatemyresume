@@ -152,7 +152,7 @@ export default function ResumePage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-slate-900">Resume</h1>
           <p className="mt-1 text-sm text-slate-500">
-            On the Free plan, your resume is uploaded fresh with each curation. Head to the Curate page to get started.
+            On the Free plan, your resume is uploaded fresh with each diagnosis. Head to the Diagnose page to get started.
           </p>
         </div>
 

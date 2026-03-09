@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'CurateMyResume - AI Resume-to-JD Matching',
+  title: 'Resume MD — AI Resume Diagnostics',
   description:
-    'Stop guessing. Start landing. AI-powered resume analysis that tells you exactly how you fit every role.',
+    'Stop guessing. Start landing. AI-powered resume diagnostics that tell you exactly how you fit every role.',
 };
 
 export default function RootLayout({

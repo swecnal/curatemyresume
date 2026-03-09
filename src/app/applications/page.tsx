@@ -97,7 +97,7 @@ export default function ApplicationsPage() {
           href="/curate"
           className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
         >
-          Curate a Role
+          Diagnose a Role
         </Link>
       </div>
 

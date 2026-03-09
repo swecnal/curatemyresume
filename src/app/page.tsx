@@ -52,7 +52,7 @@ export default function LandingPage() {
         <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-20 sm:px-6 sm:pb-32 sm:pt-28 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-6 inline-flex items-center rounded-full bg-indigo-100 px-4 py-1.5 text-sm font-medium text-indigo-700">
-              AI-Powered Resume Intelligence
+              AI-Powered Resume Diagnostics
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
               Stop Guessing.{' '}
@@ -67,16 +67,16 @@ export default function LandingPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
               <Link
-                href="/login"
+                href="/signup"
                 className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-700 hover:shadow-md"
               >
                 Get Started Free
               </Link>
               <Link
-                href="#features"
+                href="/try"
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50"
               >
-                See How It Works
+                Try It Now
               </Link>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function LandingPage() {
               Everything you need to land the right role
             </h2>
             <p className="mt-4 text-lg text-slate-600">
-              From instant fit analysis to ATS-ready formatting, CurateMyResume gives you
+              From instant fit analysis to ATS-ready formatting, Resume MD gives you
               the edge in every application.
             </p>
           </div>
@@ -132,12 +132,12 @@ export default function LandingPage() {
       {/* CTA */}
       <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white">Ready to curate your next opportunity?</h2>
+          <h2 className="text-3xl font-bold text-white">Ready to diagnose your next opportunity?</h2>
           <p className="mt-4 text-lg text-indigo-100">
-            Join thousands of job seekers who use CurateMyResume to apply smarter, not harder.
+            Join thousands of job seekers who use Resume MD to apply smarter, not harder.
           </p>
           <Link
-            href="/login"
+            href="/try"
             className="mt-8 inline-block rounded-lg bg-white px-8 py-3 text-sm font-semibold text-indigo-700 shadow-sm transition-all hover:bg-indigo-50 hover:shadow-md"
           >
             Get Started Free
@@ -150,12 +150,12 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600">
-              <span className="text-xs font-bold text-white">C</span>
+              <span className="text-[9px] font-bold text-white">rMD</span>
             </div>
-            <span className="text-sm font-semibold text-slate-900">CurateMyResume</span>
+            <span className="text-sm font-semibold text-slate-900">Resume <span className="text-indigo-600">MD</span></span>
           </div>
           <p className="mt-4 text-sm text-slate-500">
-            &copy; {new Date().getFullYear()} CurateMyResume. All rights reserved.
+            &copy; {new Date().getFullYear()} Resume MD. All rights reserved.
           </p>
         </div>
       </footer>
@@ -287,7 +287,7 @@ function LandingPricingClientSection() {
             ))}
           </ul>
           <Link
-            href="/login"
+            href="/signup"
             className={`block w-full rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-colors ${
               plan.highlighted
                 ? 'bg-indigo-600 text-white hover:bg-indigo-700'

@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import LinkedIn from "next-auth/providers/linkedin";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 import { supabase } from "@/lib/supabase";
 
 import type { NextAuthConfig } from "next-auth";
@@ -38,6 +40,37 @@ const config: NextAuthConfig = {
     LinkedIn({
       clientId: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+    }),
+    Credentials({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const email = (credentials.email as string).trim().toLowerCase();
+        const password = credentials.password as string;
+
+        const { data: user, error } = await supabase
+          .from("cmr_users")
+          .select("id, email, name, first_name, last_name, avatar_url, password_hash")
+          .eq("email", email)
+          .maybeSingle();
+
+        if (error || !user || !user.password_hash) return null;
+
+        const valid = await bcrypt.compare(password, user.password_hash);
+        if (!valid) return null;
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.avatar_url,
+        };
+      },
     }),
   ],
   pages: {

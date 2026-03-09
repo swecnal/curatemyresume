@@ -50,9 +50,27 @@ export default function CuratePage() {
   const hasResumeStorage = canAccess(tier, 'resumeStorage');
   const hasAppTracking = canAccess(tier, 'applicationTracking');
 
+  // Teaser JD from /try page
+  const [teaserJD, setTeaserJD] = useState<string | null>(null);
+
   useEffect(() => {
     async function init() {
       try {
+        // Pick up teaser data from sessionStorage (from /try page)
+        if (typeof window !== 'undefined') {
+          const storedResume = sessionStorage.getItem('rmd_teaser_resume');
+          const storedJD = sessionStorage.getItem('rmd_teaser_jd');
+          if (storedResume) {
+            setResumeText(storedResume);
+            setResumeReady(true);
+            sessionStorage.removeItem('rmd_teaser_resume');
+          }
+          if (storedJD) {
+            setTeaserJD(storedJD);
+            sessionStorage.removeItem('rmd_teaser_jd');
+          }
+        }
+
         const [resumeRes, usageRes] = await Promise.all([
           fetch('/api/resume/upload'),
           fetch('/api/profile?stats=true'),
@@ -323,7 +341,7 @@ export default function CuratePage() {
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Curate a Role</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Diagnose a Role</h1>
           <p className="mt-1 text-sm text-slate-500">
             Paste a job description and we will analyze how well you fit.
           </p>
@@ -432,10 +450,10 @@ export default function CuratePage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Curating...
+                  Diagnosing...
                 </>
               ) : (
-                `Curate ${bulkJDs.filter((jd) => jd.trim()).length} Role${bulkJDs.filter((jd) => jd.trim()).length !== 1 ? 's' : ''}`
+                `Diagnose ${bulkJDs.filter((jd) => jd.trim()).length} Role${bulkJDs.filter((jd) => jd.trim()).length !== 1 ? 's' : ''}`
               )}
             </button>
           </div>

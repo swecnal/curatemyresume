@@ -62,7 +62,7 @@ export default function JDInput({ onSubmit, loading = false }: JDInputProps) {
             Analyzing...
           </>
         ) : (
-          'Curate This Role'
+          'Diagnose This Role'
         )}
       </button>
     </form>
