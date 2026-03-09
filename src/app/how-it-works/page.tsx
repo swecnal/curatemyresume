@@ -158,8 +158,8 @@ export default function HowItWorksPage() {
           </svg>
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            How ResumeMD Works
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            How &amp; Why ResumeMD Works
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-indigo-200">
             Four simple steps from job posting to tailored application. No guesswork.
@@ -167,38 +167,37 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* Overview — Three paragraphs */}
+      {/* Why It Works */}
       <section className="py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-10 text-center text-3xl font-extrabold text-slate-900">
-            Why ResumeMD Exists
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
+            Why ResumeMD{' '}
+            <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">Works</span>
           </h2>
-          <div className="space-y-6">
-            <div className="rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/50 to-white p-6">
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="rounded-2xl border-l-4 border-indigo-500 bg-gradient-to-br from-indigo-50/60 to-white p-8">
+              <h3 className="mb-4 text-lg font-bold text-slate-900">Instant Clarity</h3>
               <p className="text-base leading-relaxed text-slate-700">
-                Every ResumeMD user gets instant fit scores, go/no-go verdicts, and skill gap
-                breakdowns for every role they diagnose. Upload your resume once, paste any job listing,
-                and in seconds you know exactly where you stand — which skills match, which are missing,
-                and whether the role is worth your time. Download tailored resumes as polished PDFs
-                ready to submit.
+                Upload your resume once, paste any job listing, and in seconds you know exactly where
+                you stand — which skills match, which are missing, and whether the role is worth your
+                time. Fit scores, go/no-go verdicts, and polished PDFs ready to submit.
               </p>
             </div>
-            <div className="rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50/50 to-white p-6">
+            <div className="rounded-2xl border-l-4 border-blue-500 bg-gradient-to-br from-blue-50/60 to-white p-8">
+              <h3 className="mb-4 text-lg font-bold text-slate-900">Beat the Bots</h3>
               <p className="text-base leading-relaxed text-slate-700">
-                When you&apos;re actively job hunting, you need more firepower. Get ATS-optimized
-                formatting through ResumeRx so your resume actually gets past automated screening systems
-                that reject up to 75% of applicants. Add fair market salary research so you never
-                undervalue yourself, detailed skill gap analysis with actionable next steps, and full
-                application tracking to manage your pipeline.
+                ATS systems auto-reject up to 75% of applicants before a human ever sees their resume.
+                ResumeRx formats your resume to get past the bots. Add salary research so you never
+                undervalue yourself, gap analysis with actionable steps, and full application tracking.
               </p>
             </div>
-            <div className="rounded-xl border border-violet-100 bg-gradient-to-r from-violet-50/50 to-white p-6">
+            <div className="rounded-2xl border-l-4 border-violet-500 bg-gradient-to-br from-violet-50/60 to-white p-8">
+              <h3 className="mb-4 text-lg font-bold text-slate-900">Total Domination</h3>
               <p className="text-base leading-relaxed text-slate-700">
-                With <strong className="font-bold text-slate-900">PhD Mode</strong>, you get unlimited
-                diagnoses, bulk analysis of multiple roles at once, custom resume tailoring per position,
-                optimized cover letters, salary negotiation talking points, and stored resume history. It&apos;s
-                everything you need to <strong className="font-bold text-slate-900">apply to every role with
-                a perfectly tailored resume and actually land the interview</strong>.
+                With <strong className="font-bold text-slate-900">PhD Mode</strong>, get unlimited
+                diagnoses, bulk analysis of multiple roles at once, custom tailoring per position,
+                optimized cover letters, salary negotiation intel, and stored resume history.{' '}
+                <strong className="font-bold text-slate-900">Every role gets a perfectly tailored resume</strong>.
               </p>
             </div>
           </div>
@@ -207,8 +206,8 @@ export default function HowItWorksPage() {
 
       {/* Steps */}
       <section className="border-t border-slate-200 bg-gradient-to-br from-slate-50 to-white py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-16 text-center text-3xl font-extrabold text-slate-900">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-16 text-center text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
             Four Steps to Your Next Role
           </h2>
           <div className="space-y-16">
@@ -227,10 +226,28 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Mid-page CTA */}
+      <section className="border-t border-slate-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 py-16">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
+            See it in action.
+          </h2>
+          <p className="mt-3 text-base text-slate-600">
+            Upload your resume, paste a job listing, and get your first diagnosis in under 2 minutes.
+          </p>
+          <Link
+            href="/try"
+            className="mt-8 inline-block rounded-xl bg-indigo-600 px-10 py-4 text-base font-extrabold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 hover:bg-indigo-500 hover:shadow-xl"
+          >
+            Diagnose Your Resume Free &rarr;
+          </Link>
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section className="border-t border-slate-200 py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-4 text-center text-3xl font-extrabold text-slate-900">
+          <h2 className="mb-4 text-center text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
             What You Get
           </h2>
           <p className="mx-auto mb-14 max-w-2xl text-center text-base text-slate-500">
@@ -260,7 +277,7 @@ export default function HowItWorksPage() {
       {/* CTA */}
       <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 className="text-4xl font-extrabold text-white lg:text-5xl">
             Ready to Diagnose Your First Role?
           </h2>
           <p className="mt-4 text-lg text-indigo-100">
@@ -268,9 +285,9 @@ export default function HowItWorksPage() {
           </p>
           <Link
             href="/try"
-            className="mt-8 inline-block rounded-lg bg-white px-10 py-4 text-base font-bold text-indigo-700 shadow-lg shadow-indigo-900/20 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl"
+            className="mt-8 inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-indigo-900/20 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl"
           >
-            Get Your Free Diagnosis
+            Diagnose Your Resume Free &rarr;
           </Link>
         </div>
       </section>

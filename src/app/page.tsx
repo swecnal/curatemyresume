@@ -71,24 +71,35 @@ export default function LandingPage() {
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
               <span className="block">Stop Guessing.</span>
-              <span className="block bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400 bg-clip-text pb-2 text-transparent">
+              <span className="block bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400 bg-clip-text pb-2 text-transparent sm:text-7xl" style={{ letterSpacing: '0.01em' }}>
                 Start Landing.
               </span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-indigo-200">
+            <p className="mx-auto mt-6 max-w-2xl text-lg font-semibold text-white">
+              Land your next role with ResumeMD.
+            </p>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-8 text-indigo-200">
               Upload your resume and any job listing — our ResumeMD utilizes cutting-edge AI
               to diagnose your fit, identifies your gaps, and rewrites your resume &amp; cover
               letter to match each role <em className="italic">perfectly</em>. Fit scores,
               salary insights, and a tailored resume in seconds.
             </p>
-            <div className="mt-10">
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
                 href="/try"
                 className="inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl hover:shadow-indigo-500/30"
               >
-                Get Your Free Diagnosis
+                Diagnose Your Resume Free
               </Link>
-              <p className="mt-4 text-sm text-indigo-400">
+              <Link
+                href="/how-it-works"
+                className="inline-block rounded-xl border border-indigo-400/40 px-8 py-4 text-base font-semibold text-indigo-200 transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-500/10 hover:text-white"
+              >
+                Why it Works
+              </Link>
+            </div>
+            <div className="mt-4">
+              <p className="text-sm text-indigo-400">
                 Already have an account?{' '}
                 <Link href="/login" className="font-medium text-indigo-300 underline underline-offset-2 hover:text-white">
                   Sign in
@@ -126,7 +137,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
-              Everything You Need to Land{' '}
+              Everything You Need to<br />Land{' '}
               <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">the Right Role</span>
             </h2>
             <p className="mt-4 text-lg text-slate-600">
@@ -240,7 +251,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-200 bg-white py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 text-center text-2xl font-extrabold text-slate-900">
-            Four Steps. One Winning Resume.
+            Four Steps to Job-winning Resumes.
           </h2>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {[
@@ -399,7 +410,8 @@ export default function LandingPage() {
       <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Stop Sending Resumes Into the Void.
+            <span className="block">Stop Sending Your Resume</span>
+            <span className="block">Into{' '}<span className="bg-gradient-to-r from-red-300 via-orange-300 to-amber-300 bg-clip-text text-transparent">the Void</span>.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-indigo-100">
             Every application without a diagnosis is a roll of the dice. Know your fit, fix your

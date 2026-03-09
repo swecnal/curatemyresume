@@ -10,7 +10,7 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const publicLinks = [
-    { href: '/how-it-works', label: 'How It Works' },
+    { href: '/how-it-works', label: 'How & Why It Works' },
   ];
 
   const authLinks = [
