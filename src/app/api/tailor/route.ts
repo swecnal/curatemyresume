@@ -70,11 +70,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Fetch user's skill tiers for tailoring context
+    const { data: userProfile } = await supabase
+      .from("cmr_users")
+      .select("strong_skills, developing_skills")
+      .eq("id", userId)
+      .single();
+
     // Call Claude to tailor the resume for this specific JD
     const tailored = await tailorResume(
       resume.raw_text,
       application.jd_text,
-      application.analysis_json
+      application.analysis_json,
+      {
+        strong_skills: userProfile?.strong_skills ?? undefined,
+        developing_skills: userProfile?.developing_skills ?? undefined,
+      }
     );
 
     // Insert into cmr_tailored_resumes

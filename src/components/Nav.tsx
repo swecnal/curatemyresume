@@ -8,10 +8,12 @@ export default function Nav() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const links = [
+  const leftLinks = [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/curate', label: 'Curate' },
     { href: '/resume', label: 'Resume' },
+  ];
+
+  const rightLinks = [
     { href: '/applications', label: 'Applications' },
     { href: '/pricing', label: 'Pricing' },
   ];
@@ -27,9 +29,29 @@ export default function Nav() {
           <span className="text-lg font-bold text-slate-900">CurateMyResume</span>
         </Link>
 
-        {/* Desktop Links */}
+        {/* Desktop Links: left group, Curate CTA, right group */}
         <div className="hidden items-center gap-1 md:flex">
-          {links.map((link) => (
+          {/* Left group */}
+          {leftLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {/* Curate CTA */}
+          <Link
+            href="/curate"
+            className="mx-3 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
+          >
+            Curate
+          </Link>
+
+          {/* Right group */}
+          {rightLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -102,7 +124,17 @@ export default function Nav() {
       {mobileOpen && (
         <div className="border-t border-slate-200 bg-white md:hidden">
           <div className="space-y-1 px-4 pb-4 pt-2">
-            {links.map((link) => (
+            {/* Curate CTA — full-width button at top */}
+            <Link
+              href="/curate"
+              onClick={() => setMobileOpen(false)}
+              className="block rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
+            >
+              Curate
+            </Link>
+
+            {/* Other nav links */}
+            {[...leftLinks, ...rightLinks].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -112,6 +144,7 @@ export default function Nav() {
                 {link.label}
               </Link>
             ))}
+
             <div className="mt-3 border-t border-slate-200 pt-3">
               {session?.user ? (
                 <>

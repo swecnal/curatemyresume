@@ -3,33 +3,32 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+const yoeRanges = ['0-1', '2-4', '5-7', '8-10', '11-15', '16-20', '20+'];
+const locationOptions = ['remote', 'hybrid', 'on-site', 'flexible'];
+const clearanceOptions = [
+  { value: 'none', label: 'None' },
+  { value: 'no_preference', label: 'No preference' },
+  { value: 'secret', label: 'Secret' },
+  { value: 'top_secret', label: 'Top Secret' },
+  { value: 'ts_sci', label: 'TS/SCI' },
+];
+
+const industryOptions = [
+  'Technology', 'Finance', 'Healthcare', 'Education', 'Marketing', 'Sales',
+  'Consulting', 'Manufacturing', 'Retail', 'Government', 'Nonprofit', 'Media',
+  'Legal', 'Real Estate', 'Energy',
+];
+
 interface OnboardingForm {
   targetRole: string;
   salaryMin: string;
   salaryMax: string;
   linkedinUrl: string;
-  yearsExperience: string;
-  locationPreference: 'remote' | 'hybrid' | 'on-site' | 'flexible';
+  yearsExperienceRange: string;
+  locationPreferences: string[];
+  securityClearance: string;
   industries: string[];
 }
-
-const industryOptions = [
-  'Technology',
-  'Finance',
-  'Healthcare',
-  'Education',
-  'Marketing',
-  'Sales',
-  'Consulting',
-  'Manufacturing',
-  'Retail',
-  'Government',
-  'Nonprofit',
-  'Media',
-  'Legal',
-  'Real Estate',
-  'Energy',
-];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -40,10 +39,20 @@ export default function OnboardingPage() {
     salaryMin: '',
     salaryMax: '',
     linkedinUrl: '',
-    yearsExperience: '',
-    locationPreference: 'remote',
+    yearsExperienceRange: '',
+    locationPreferences: [],
+    securityClearance: 'none',
     industries: [],
   });
+
+  const handleLocationToggle = (loc: string) => {
+    setForm((prev) => ({
+      ...prev,
+      locationPreferences: prev.locationPreferences.includes(loc)
+        ? prev.locationPreferences.filter((l) => l !== loc)
+        : [...prev.locationPreferences, loc],
+    }));
+  };
 
   const handleIndustryToggle = (industry: string) => {
     setForm((prev) => ({
@@ -64,13 +73,14 @@ export default function OnboardingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          targetRole: form.targetRole,
-          salaryMin: form.salaryMin ? Number(form.salaryMin) : null,
-          salaryMax: form.salaryMax ? Number(form.salaryMax) : null,
-          linkedinUrl: form.linkedinUrl || null,
-          yearsExperience: form.yearsExperience ? Number(form.yearsExperience) : null,
-          locationPreference: form.locationPreference,
-          industries: form.industries,
+          target_role: form.targetRole,
+          target_salary_min: form.salaryMin ? Number(form.salaryMin) : null,
+          target_salary_max: form.salaryMax ? Number(form.salaryMax) : null,
+          linkedin_url: form.linkedinUrl || null,
+          years_experience_range: form.yearsExperienceRange || null,
+          location_preferences: form.locationPreferences,
+          security_clearance: form.securityClearance,
+          industry_preferences: form.industries,
         }),
       });
 
@@ -87,6 +97,8 @@ export default function OnboardingPage() {
     }
   };
 
+  const inputClass = "w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20";
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
@@ -96,134 +108,92 @@ export default function OnboardingPage() {
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
-      >
+      <form onSubmit={handleSubmit} className="space-y-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
         {error && (
-          <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
+          <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
         )}
 
         {/* Target Role */}
         <div>
-          <label htmlFor="targetRole" className="mb-1.5 block text-sm font-medium text-slate-700">
-            Target Role
-          </label>
-          <input
-            id="targetRole"
-            type="text"
-            required
-            value={form.targetRole}
+          <label htmlFor="targetRole" className="mb-1.5 block text-sm font-medium text-slate-700">Target Role</label>
+          <input id="targetRole" type="text" required value={form.targetRole}
             onChange={(e) => setForm({ ...form, targetRole: e.target.value })}
-            placeholder="e.g. Senior Product Manager"
-            className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-          />
+            placeholder="e.g. Senior Product Manager" className={inputClass} />
         </div>
 
-        {/* Salary Min/Max */}
+        {/* Salary */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="salaryMin" className="mb-1.5 block text-sm font-medium text-slate-700">
-              Minimum Salary
-            </label>
+            <label htmlFor="salaryMin" className="mb-1.5 block text-sm font-medium text-slate-700">Minimum Salary</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">$</span>
-              <input
-                id="salaryMin"
-                type="number"
-                min={0}
-                step={1000}
-                value={form.salaryMin}
+              <input id="salaryMin" type="number" min={0} step={1000} value={form.salaryMin}
                 onChange={(e) => setForm({ ...form, salaryMin: e.target.value })}
-                placeholder="80,000"
-                className="w-full rounded-lg border border-slate-300 bg-slate-50 py-2.5 pl-7 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-              />
+                placeholder="80,000" className="w-full rounded-lg border border-slate-300 bg-slate-50 py-2.5 pl-7 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20" />
             </div>
           </div>
           <div>
-            <label htmlFor="salaryMax" className="mb-1.5 block text-sm font-medium text-slate-700">
-              Maximum Salary
-            </label>
+            <label htmlFor="salaryMax" className="mb-1.5 block text-sm font-medium text-slate-700">Maximum Salary</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">$</span>
-              <input
-                id="salaryMax"
-                type="number"
-                min={0}
-                step={1000}
-                value={form.salaryMax}
+              <input id="salaryMax" type="number" min={0} step={1000} value={form.salaryMax}
                 onChange={(e) => setForm({ ...form, salaryMax: e.target.value })}
-                placeholder="150,000"
-                className="w-full rounded-lg border border-slate-300 bg-slate-50 py-2.5 pl-7 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-              />
+                placeholder="150,000" className="w-full rounded-lg border border-slate-300 bg-slate-50 py-2.5 pl-7 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20" />
             </div>
           </div>
         </div>
 
-        {/* LinkedIn URL */}
+        {/* LinkedIn */}
         <div>
-          <label htmlFor="linkedinUrl" className="mb-1.5 block text-sm font-medium text-slate-700">
-            LinkedIn URL
-          </label>
-          <input
-            id="linkedinUrl"
-            type="url"
-            value={form.linkedinUrl}
+          <label htmlFor="linkedinUrl" className="mb-1.5 block text-sm font-medium text-slate-700">LinkedIn URL</label>
+          <input id="linkedinUrl" type="url" value={form.linkedinUrl}
             onChange={(e) => setForm({ ...form, linkedinUrl: e.target.value })}
-            placeholder="https://linkedin.com/in/yourname"
-            className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-          />
+            placeholder="https://linkedin.com/in/yourname" className={inputClass} />
         </div>
 
-        {/* Years of Experience */}
+        {/* YOE Range */}
         <div>
-          <label htmlFor="yearsExperience" className="mb-1.5 block text-sm font-medium text-slate-700">
-            Years of Experience
-          </label>
-          <select
-            id="yearsExperience"
-            value={form.yearsExperience}
-            onChange={(e) => setForm({ ...form, yearsExperience: e.target.value })}
-            className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 transition-colors focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-          >
+          <label htmlFor="yearsExperienceRange" className="mb-1.5 block text-sm font-medium text-slate-700">Years of Experience</label>
+          <select id="yearsExperienceRange" value={form.yearsExperienceRange}
+            onChange={(e) => setForm({ ...form, yearsExperienceRange: e.target.value })} className={inputClass}>
             <option value="">Select...</option>
-            {Array.from({ length: 30 }, (_, i) => i + 1).map((y) => (
-              <option key={y} value={y}>
-                {y} {y === 1 ? 'year' : 'years'}
-              </option>
+            {yoeRanges.map((range) => (
+              <option key={range} value={range}>{range} years</option>
             ))}
-            <option value="31">30+ years</option>
           </select>
         </div>
 
-        {/* Location Preference */}
+        {/* Location Preferences */}
         <fieldset>
-          <legend className="mb-3 text-sm font-medium text-slate-700">Location Preference</legend>
+          <legend className="mb-3 text-sm font-medium text-slate-700">
+            Location Preferences <span className="text-slate-400">(select all that apply)</span>
+          </legend>
           <div className="flex flex-wrap gap-3">
-            {(['remote', 'hybrid', 'on-site', 'flexible'] as const).map((option) => (
-              <label
-                key={option}
-                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
-                  form.locationPreference === option
-                    ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                    : 'border-slate-300 bg-white text-slate-600 hover:border-slate-400'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="locationPreference"
-                  value={option}
-                  checked={form.locationPreference === option}
-                  onChange={() => setForm({ ...form, locationPreference: option })}
-                  className="sr-only"
-                />
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </label>
-            ))}
+            {locationOptions.map((option) => {
+              const selected = form.locationPreferences.includes(option);
+              return (
+                <label key={option}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                    selected ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-300 bg-white text-slate-600 hover:border-slate-400'
+                  }`}>
+                  <input type="checkbox" checked={selected} onChange={() => handleLocationToggle(option)} className="sr-only" />
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </label>
+              );
+            })}
           </div>
         </fieldset>
+
+        {/* Security Clearance */}
+        <div>
+          <label htmlFor="securityClearance" className="mb-1.5 block text-sm font-medium text-slate-700">Security Clearance</label>
+          <select id="securityClearance" value={form.securityClearance}
+            onChange={(e) => setForm({ ...form, securityClearance: e.target.value })} className={inputClass}>
+            {clearanceOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
 
         {/* Industry Preferences */}
         <fieldset>
@@ -234,20 +204,11 @@ export default function OnboardingPage() {
             {industryOptions.map((industry) => {
               const selected = form.industries.includes(industry);
               return (
-                <label
-                  key={industry}
+                <label key={industry}
                   className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                    selected
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selected}
-                    onChange={() => handleIndustryToggle(industry)}
-                    className="sr-only"
-                  />
+                    selected ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300'
+                  }`}>
+                  <input type="checkbox" checked={selected} onChange={() => handleIndustryToggle(industry)} className="sr-only" />
                   {industry}
                 </label>
               );
@@ -256,11 +217,8 @@ export default function OnboardingPage() {
         </fieldset>
 
         {/* Submit */}
-        <button
-          type="submit"
-          disabled={loading || !form.targetRole.trim()}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading || !form.targetRole.trim()}
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">
           {loading ? (
             <>
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

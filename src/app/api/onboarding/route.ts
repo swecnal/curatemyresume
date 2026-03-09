@@ -18,16 +18,18 @@ export async function POST(request: Request) {
       target_salary_min,
       target_salary_max,
       linkedin_url,
-      years_experience,
-      location_preference,
+      years_experience_range,
+      location_preferences,
+      security_clearance,
       industry_preferences,
     } = body as {
       target_role?: string;
       target_salary_min?: number;
       target_salary_max?: number;
       linkedin_url?: string;
-      years_experience?: number;
-      location_preference?: string;
+      years_experience_range?: string;
+      location_preferences?: string[];
+      security_clearance?: string;
       industry_preferences?: string[];
     };
 
@@ -36,11 +38,13 @@ export async function POST(request: Request) {
       .from("cmr_users")
       .update({
         target_role: target_role ?? null,
+        target_roles: target_role ? [target_role] : [],
         target_salary_min: target_salary_min ?? null,
         target_salary_max: target_salary_max ?? null,
         linkedin_url: linkedin_url ?? null,
-        years_experience: years_experience ?? null,
-        location_preference: location_preference ?? null,
+        years_experience_range: years_experience_range ?? null,
+        location_preferences: location_preferences ?? [],
+        security_clearance: security_clearance ?? null,
         industry_preferences: industry_preferences ?? null,
         onboarding_complete: true,
       })

@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     const { data: userProfile } = await supabase
       .from("cmr_users")
       .select(
-        "target_role, industry_preferences, years_experience, target_salary_min, target_salary_max, location_preference"
+        "target_role, target_roles, industry_preferences, years_experience, years_experience_range, target_salary_min, target_salary_max, location_preference, location_preferences, strong_skills, developing_skills, security_clearance"
       )
       .eq("id", userId)
       .single();
@@ -84,6 +84,11 @@ export async function POST(request: Request) {
       target_salary_min: userProfile?.target_salary_min ?? undefined,
       target_salary_max: userProfile?.target_salary_max ?? undefined,
       location_preference: userProfile?.location_preference ?? undefined,
+      location_preferences: userProfile?.location_preferences ?? undefined,
+      target_roles: userProfile?.target_roles ?? undefined,
+      strong_skills: userProfile?.strong_skills ?? undefined,
+      developing_skills: userProfile?.developing_skills ?? undefined,
+      security_clearance: userProfile?.security_clearance ?? undefined,
     });
 
     // Insert result into cmr_applications

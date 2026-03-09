@@ -44,7 +44,7 @@ const config: NextAuthConfig = {
     signIn: "/login",
   },
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (!user.email || !account) return false;
 
       // Check if user already exists in cmr_users
@@ -61,11 +61,21 @@ const config: NextAuthConfig = {
 
       // Create new user if they don't exist
       if (!existingUser) {
+        // Extract first/last name from Google profile, fall back to splitting user.name
+        const nameParts = user.name?.split(" ") ?? [];
+        const firstName =
+          (profile as any)?.given_name ?? nameParts[0] ?? null;
+        const lastName =
+          (profile as any)?.family_name ??
+          (nameParts.length > 1 ? nameParts.slice(1).join(" ") : null);
+
         const { error: insertError } = await supabase
           .from("cmr_users")
           .insert({
             email: user.email,
             name: user.name ?? user.email,
+            first_name: firstName,
+            last_name: lastName,
             avatar_url: user.image ?? null,
             provider: account.provider,
             tier: "free",

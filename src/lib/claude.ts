@@ -30,6 +30,11 @@ interface UserPrefs {
   target_salary_min?: number;
   target_salary_max?: number;
   location_preference?: string;
+  location_preferences?: string[];
+  target_roles?: string[];
+  strong_skills?: string[];
+  developing_skills?: string[];
+  security_clearance?: string;
 }
 
 export interface JDAnalysis {
@@ -45,6 +50,9 @@ export interface JDAnalysis {
   salary_ote: number | null;
   salary_desired: string;
   salary_notes: string;
+  matched_strong_skills?: string[];
+  matched_developing_skills?: string[];
+  missing_skills?: string[];
 }
 
 export async function analyzeJD(
@@ -53,8 +61,27 @@ export async function analyzeJD(
   userPrefs: UserPrefs
 ): Promise<JDAnalysis> {
   const salaryContext = buildSalaryContext(userPrefs);
-  const locationContext = userPrefs.location_preference
-    ? `The candidate's location preference is: ${userPrefs.location_preference}. Factor this into the fit analysis — flag if the role's location conflicts with this preference.`
+  const locationContext = userPrefs.location_preferences?.length
+    ? `The candidate's location preferences are: ${userPrefs.location_preferences.join(', ')}. Factor this into the fit analysis — flag if the role's location conflicts with these preferences.`
+    : userPrefs.location_preference
+      ? `The candidate's location preference is: ${userPrefs.location_preference}. Factor this into the fit analysis — flag if the role's location conflicts with this preference.`
+      : "";
+
+  const targetRolesContext = userPrefs.target_roles?.length
+    ? `The candidate is targeting these roles: ${userPrefs.target_roles.join(', ')}. Match the JD against these target roles, but also consider roles that are logically similar or adjacent (e.g., "Customer Success" matches "CSM", "Customer Success Manager", "Client Success"; "Network Engineer" matches "Infrastructure Engineer", "NOC Engineer"). Use judgment on reasonable role matches.`
+    : "";
+
+  const skillsContext = (userPrefs.strong_skills?.length || userPrefs.developing_skills?.length)
+    ? `\nSKILLS CONTEXT:
+The candidate has categorized their skills into two tiers:
+- Strong Skills (confident, can defend in interview): ${userPrefs.strong_skills?.join(', ') || 'None specified'}
+- Developing Skills (has exposure but not expert): ${userPrefs.developing_skills?.join(', ') || 'None specified'}
+
+When assessing fit, weight Strong Skills more heavily. Note any JD-required skills that are only in the Developing tier, and any that are missing entirely. Include matched_strong_skills, matched_developing_skills, and missing_skills in the response.`
+    : "";
+
+  const clearanceContext = userPrefs.security_clearance && userPrefs.security_clearance !== 'none'
+    ? `The candidate's security clearance status: ${userPrefs.security_clearance}. If the JD requires a clearance the candidate doesn't have, flag this as a significant gap.`
     : "";
 
   const systemPrompt = `You are an expert career advisor and job-fit analyst. Your job is to analyze a job description against a candidate's resume and produce a structured fit assessment.
@@ -77,6 +104,9 @@ SALARY EXTRACTION:
 - If no salary is listed, set salary_in_jd to false and salary fields to null.
 ${salaryContext}
 ${locationContext}
+${targetRolesContext}
+${skillsContext}
+${clearanceContext}
 
 Respond with ONLY valid JSON matching this exact structure (no markdown, no extra text):
 {
@@ -91,7 +121,10 @@ Respond with ONLY valid JSON matching this exact structure (no markdown, no extr
   "salary_max": number | null,
   "salary_ote": number | null,
   "salary_desired": "string (assessment of salary alignment with candidate expectations)",
-  "salary_notes": "string (any additional comp details — equity, bonus, benefits mentioned)"
+  "salary_notes": "string (any additional comp details — equity, bonus, benefits mentioned)",
+  "matched_strong_skills": ["string"],
+  "matched_developing_skills": ["string"],
+  "missing_skills": ["string"]
 }`;
 
   const response = await anthropic.messages.create({
@@ -137,7 +170,11 @@ export interface ParsedProfile {
   name: string;
   current_title: string;
   years_experience: number;
+  city: string;
+  state: string;
   skills: string[];
+  strong_skills: string[];
+  developing_skills: string[];
   experience: {
     title: string;
     company: string;
@@ -159,12 +196,23 @@ export async function parseResume(resumeText: string): Promise<ParsedProfile> {
 
 For years_experience: estimate total years of professional experience based on employment dates. If dates are ambiguous, make a reasonable estimate.
 
+For city and state: extract from the candidate's contact information header or from the most recent role's location. Use the 2-letter state abbreviation (e.g., "TX", "CA").
+
+For skills categorization:
+- "strong_skills": Skills the candidate has demonstrated significantly — listed in a dedicated Skills section, mentioned across multiple roles, or clearly central to their work. These are skills they could confidently discuss in an interview.
+- "developing_skills": Skills mentioned only once in passing, used in a minor capacity, or listed as part of education/certifications rather than hands-on work. These are skills the candidate has exposure to but may not be an expert in.
+- "skills": The combined flat list of all skills (union of strong + developing) for backward compatibility.
+
 Respond with ONLY valid JSON matching this exact structure (no markdown, no extra text):
 {
   "name": "string",
   "current_title": "string (most recent job title)",
   "years_experience": number,
-  "skills": ["string", "string", ...],
+  "city": "string (city from contact info or most recent role)",
+  "state": "string (2-letter state abbreviation)",
+  "skills": ["string", ...],
+  "strong_skills": ["string", ...],
+  "developing_skills": ["string", ...],
   "experience": [
     {
       "title": "string",
@@ -267,8 +315,22 @@ export interface TailoredResume {
 export async function tailorResume(
   resumeText: string,
   jdText: string,
-  fitAnalysis: JDAnalysis
+  fitAnalysis: JDAnalysis,
+  skillTiers?: { strong_skills?: string[]; developing_skills?: string[] }
 ): Promise<TailoredResume> {
+  const skillTierRules = (skillTiers?.strong_skills?.length || skillTiers?.developing_skills?.length)
+    ? `\nSKILL TIER RULES:
+The candidate has categorized their skills:
+- Strong Skills (confident): ${skillTiers?.strong_skills?.join(', ') || 'None specified'}
+- Developing Skills (has exposure): ${skillTiers?.developing_skills?.join(', ') || 'None specified'}
+
+When tailoring:
+- Strong Skills should be placed prominently in the Skills section and woven into experience bullets where natural
+- Developing Skills should only be included when the JD specifically requires them, and placed less prominently
+- Never present a Developing skill as expert-level — keep the framing honest
+- Priority: match JD keywords from Strong Skills first, then fill gaps with Developing Skills`
+    : "";
+
   const systemPrompt = `You are ResumeTailor, an elite career strategist who optimizes resumes for specific job descriptions. You operate in Beast Mode — every word earns its place.
 
 YOUR MISSION:
@@ -280,6 +342,7 @@ OPTIMIZATION STRATEGY:
 3. EMPHASIZE: Expand bullets that align with key JD requirements; condense less relevant ones
 4. KEYWORD MATCH: Naturally incorporate keywords and phrases from the JD into the resume
 5. SUMMARY REWRITE: Craft a summary that speaks directly to the role's core needs
+${skillTierRules}
 
 HARD RULES — DO NOT VIOLATE:
 - NEVER fabricate experiences, skills, certifications, or metrics
