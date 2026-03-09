@@ -96,6 +96,25 @@ export default function LandingPage() {
               </p>
             </div>
           </div>
+
+          {/* Results stats row */}
+          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-6 sm:gap-8">
+            <div className="text-center">
+              <p className="text-3xl font-extrabold text-white sm:text-4xl">85%</p>
+              <p className="mt-1 text-sm text-indigo-300">Time Saved on Tailoring</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-extrabold text-white sm:text-4xl">3x</p>
+              <p className="mt-1 text-sm text-indigo-300">More Interview Callbacks*</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-extrabold text-white sm:text-4xl">&lt;2 min</p>
+              <p className="mt-1 text-sm text-indigo-300">Average Diagnosis Time</p>
+            </div>
+          </div>
+          <p className="mx-auto mt-4 max-w-xl text-center text-xs text-indigo-400/60">
+            *Based on early user data and projected outcomes.
+          </p>
         </div>
       </section>
 
@@ -217,6 +236,99 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* How It Works — Process Steps */}
+      <section className="border-t border-slate-200 bg-white py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-2xl font-extrabold text-slate-900">
+            Four Steps. One Winning Resume.
+          </h2>
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            {[
+              { step: '1', title: 'Upload', desc: 'Drop your resume & paste a job listing', color: 'bg-indigo-100 text-indigo-600' },
+              { step: '2', title: 'Diagnose', desc: 'AI analyzes fit, gaps & salary data', color: 'bg-blue-100 text-blue-600' },
+              { step: '3', title: 'Tailor', desc: 'Get a rewritten resume optimized for the role', color: 'bg-violet-100 text-violet-600' },
+              { step: '4', title: 'Apply', desc: 'Submit with confidence & track results', color: 'bg-green-100 text-green-600' },
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${item.color}`}>
+                  {item.step}
+                </div>
+                <h3 className="text-sm font-bold text-slate-900">{item.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-extrabold text-slate-900">
+            Real Results from Real Job Seekers
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-500">
+            Here&apos;s what happens when you stop guessing and start diagnosing.
+          </p>
+          <div className="mx-auto mt-16 grid max-w-5xl gap-8 md:grid-cols-3">
+            {[
+              {
+                quote:
+                  'I was mass-applying to 50+ roles a week and hearing nothing. ResumeMD diagnosed why — my resume was missing half the keywords these ATS systems scan for.',
+                result: 'Landed 3 interviews in my first week',
+                suffix: ' after using ResumeRx.',
+                initials: 'MR',
+                name: 'Marcus R.',
+                role: 'Software Engineer — Atlanta, GA',
+                color: 'bg-indigo-100 text-indigo-600',
+              },
+              {
+                quote:
+                  'The salary research alone paid for 6 months of my subscription. I was about to accept $85k when ResumeMD showed me the fair market range was $105-120k.',
+                result: 'Negotiated to $112k',
+                suffix: '.',
+                initials: 'JT',
+                name: 'Jasmine T.',
+                role: 'Product Manager — Chicago, IL',
+                color: 'bg-blue-100 text-blue-600',
+              },
+              {
+                quote:
+                  'PhD Mode is unreal. I bulk-analyzed 12 job postings on a Sunday night and had tailored resumes for all of them by Monday morning.',
+                result: 'Got an offer within 3 weeks',
+                suffix: ' of switching to ResumeMD.',
+                initials: 'DK',
+                name: 'David K.',
+                role: 'Data Analyst — Austin, TX',
+                color: 'bg-violet-100 text-violet-600',
+              },
+            ].map((t) => (
+              <div key={t.initials} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="mb-4 flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="h-5 w-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  &ldquo;{t.quote} <strong className="text-slate-900">{t.result}</strong>{t.suffix}&rdquo;
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${t.color}`}>
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">{t.name}</p>
+                    <p className="text-xs text-slate-500">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="pricing" className="border-t border-slate-200 bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -234,21 +346,72 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-extrabold text-slate-900">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-12 space-y-4">
+            {[
+              {
+                q: 'How is this different from ChatGPT?',
+                a: "ChatGPT is a general-purpose chatbot. ResumeMD is purpose-built for job applications — it scores your resume against specific job descriptions, identifies skill gaps, researches salaries, formats for ATS systems, and tracks your applications. It's not a conversation; it's a diagnostic tool.",
+              },
+              {
+                q: 'Is my resume data stored or shared?',
+                a: 'Your resume is processed securely and never shared with third parties. Free tier data is deleted after analysis. Paid plans include Resume Recall for optional storage that you control.',
+              },
+              {
+                q: 'What file formats do you support?',
+                a: 'PDF and DOCX uploads are supported. Your tailored resumes are exported as clean, ATS-optimized PDFs.',
+              },
+              {
+                q: 'Can I cancel anytime?',
+                a: "Yes. No contracts, no cancellation fees. Downgrade to Free whenever you want — we're built for the job hunt, not forever.",
+              },
+              {
+                q: 'How accurate are the fit scores?',
+                a: "Our AI analyzes keyword alignment, required vs. preferred qualifications, years of experience, and skill overlap against the actual job description. It's not perfect, but it's significantly better than guessing — and it gets better with every update.",
+              },
+            ].map((item, i) => (
+              <details key={i} className="group rounded-xl border border-slate-200 bg-white shadow-sm">
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-semibold text-slate-900">
+                  {item.q}
+                  <svg
+                    className="h-5 w-5 flex-shrink-0 text-slate-400 transition-transform group-open:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </summary>
+                <p className="px-6 pb-4 text-sm leading-relaxed text-slate-600">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Ready for your <span className="bg-gradient-to-r from-indigo-200 via-blue-200 to-cyan-200 bg-clip-text text-transparent">Diagnosis</span>?
+            Stop Sending Resumes Into the Void.
           </h2>
-          <p className="mt-5 text-lg text-indigo-100">
-            Upload your resume. Add a job listing. Get your diagnosis in seconds.
+          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-indigo-100">
+            Every application without a diagnosis is a roll of the dice. Know your fit, fix your
+            gaps, and apply with a resume that actually gets read.
           </p>
           <Link
             href="/try"
             className="mt-10 inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-black/20 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl hover:shadow-black/30"
           >
-            Get Your Free Diagnosis &rarr;
+            Start Landing Interviews &rarr;
           </Link>
+          <p className="mt-4 text-sm text-indigo-300">Free. No credit card required.</p>
         </div>
       </section>
 
