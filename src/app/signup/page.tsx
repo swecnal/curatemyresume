@@ -105,7 +105,10 @@ export default function SignupPage() {
           {/* OAuth Buttons */}
           <div className="mb-6 space-y-3">
             <button
-              onClick={() => signIn('google', { callbackUrl: '/resume' })}
+              onClick={() => {
+                const hasTeaser = typeof window !== 'undefined' && sessionStorage.getItem('rmd_teaser_resume');
+                signIn('google', { callbackUrl: hasTeaser ? '/curate' : '/resume' });
+              }}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:shadow"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -118,7 +121,10 @@ export default function SignupPage() {
             </button>
 
             <button
-              onClick={() => signIn('linkedin', { callbackUrl: '/resume' })}
+              onClick={() => {
+                const hasTeaser = typeof window !== 'undefined' && sessionStorage.getItem('rmd_teaser_resume');
+                signIn('linkedin', { callbackUrl: hasTeaser ? '/curate' : '/resume' });
+              }}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:shadow"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="#0A66C2">
