@@ -179,7 +179,7 @@ export default function HowItWorksPage() {
           style={{ height: '80px' }}
         >
           <path
-            d="M0 40 C360 80, 720 0, 1080 40 S1440 60, 1440 40 L1440 80 L0 80 Z"
+            d="M0 40 C360 80, 1080 0, 1440 40 L1440 80 L0 80 Z"
             fill="#ffffff"
           />
         </svg>

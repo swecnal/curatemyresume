@@ -19,7 +19,7 @@ export default function LandingPage() {
           style={{ height: '80px' }}
         >
           <path
-            d="M0 40 C360 80, 720 0, 1080 40 S1440 60, 1440 40 L1440 80 L0 80 Z"
+            d="M0 40 C360 80, 1080 0, 1440 40 L1440 80 L0 80 Z"
             fill="#f1f5f9"
           />
         </svg>
@@ -182,7 +182,7 @@ export default function LandingPage() {
           style={{ height: '80px' }}
         >
           <path
-            d="M0 40 C480 80, 960 0, 1440 40 L1440 80 L0 80 Z"
+            d="M0 40 C360 80, 1080 0, 1440 40 L1440 80 L0 80 Z"
             fill="#0f172a"
           />
         </svg>
@@ -271,7 +271,7 @@ export default function LandingPage() {
           style={{ height: '80px' }}
         >
           <path
-            d="M0 40 C360 0, 720 80, 1080 40 S1440 20, 1440 40 L1440 80 L0 80 Z"
+            d="M0 40 C360 0, 1080 80, 1440 40 L1440 80 L0 80 Z"
             fill="#eef2ff"
           />
         </svg>
