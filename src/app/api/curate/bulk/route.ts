@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { analyzeJD } from "@/lib/claude";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { canAccess } from "@/lib/tier-features";
-import type { AnalysisOptions } from "@/lib/claude";
+import type { AnalysisOptions, UserTier } from "@/lib/claude";
 
 interface BulkJDItem {
   jd_text: string;
@@ -143,7 +143,8 @@ export async function POST(request: Request) {
           resume.raw_text,
           jd.jd_text,
           userPrefs,
-          analysisOptions
+          analysisOptions,
+          tier as UserTier
         );
 
         // Insert into cmr_applications

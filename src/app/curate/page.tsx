@@ -39,6 +39,21 @@ export default function CuratePage() {
   // JD text for tailor requests on non-tracking tiers
   const [lastJdText, setLastJdText] = useState<string>('');
 
+  // Company Review (PhD tier)
+  const [companyReview, setCompanyReview] = useState<{
+    company_name: string;
+    overall_rating: number;
+    culture_summary: string;
+    compensation_summary: string;
+    interview_process: string;
+    pros: string[];
+    cons: string[];
+    glassdoor_sentiment: string;
+    levels_fyi_insight: string;
+    recommendation: string;
+  } | null>(null);
+  const [reviewLoading, setReviewLoading] = useState(false);
+
   // Beast-tier features
   const [companyType, setCompanyType] = useState<string>('auto');
   const [bulkMode, setBulkMode] = useState(false);
@@ -272,6 +287,36 @@ export default function CuratePage() {
       URL.revokeObjectURL(blobUrl);
     } catch {
       setError('Failed to generate PDF.');
+    }
+  };
+
+  const handleCompanyReview = async () => {
+    if (!result) return;
+    setReviewLoading(true);
+    setCompanyReview(null);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/company-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_name: result.company,
+          role_title: result.role,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Company review failed.');
+      }
+
+      const data = await res.json();
+      setCompanyReview(data.review);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Company review failed.');
+    } finally {
+      setReviewLoading(false);
     }
   };
 
@@ -628,6 +673,32 @@ export default function CuratePage() {
                 </button>
               )}
 
+              {/* Company Review - Beast/PhD tier only */}
+              {canAccess(tier, 'companyReviews') && (
+                <button
+                  onClick={handleCompanyReview}
+                  disabled={reviewLoading}
+                  className="flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {reviewLoading ? (
+                    <>
+                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Researching...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" />
+                      </svg>
+                      Company Review
+                    </>
+                  )}
+                </button>
+              )}
+
               {/* PDF Download - curation result */}
               <button
                 onClick={handleDownloadPDF}
@@ -668,6 +739,91 @@ export default function CuratePage() {
                 <p className="whitespace-pre-wrap text-sm leading-relaxed text-violet-800">
                   {tailorResult}
                 </p>
+              </div>
+            )}
+
+            {/* Company Review */}
+            {companyReview && (
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-6">
+                <div className="mb-5 flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-emerald-900">
+                    {companyReview.company_name} — Company Review
+                  </h3>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
+                    {companyReview.overall_rating}/5
+                    <svg className="h-4 w-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </span>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                  {/* Culture */}
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-emerald-700">Culture</h4>
+                    <p className="text-sm leading-relaxed text-slate-700">{companyReview.culture_summary}</p>
+                  </div>
+
+                  {/* Compensation */}
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-emerald-700">Compensation</h4>
+                    <p className="text-sm leading-relaxed text-slate-700">{companyReview.compensation_summary}</p>
+                  </div>
+
+                  {/* Interview Process */}
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-emerald-700">Interview Process</h4>
+                    <p className="text-sm leading-relaxed text-slate-700">{companyReview.interview_process}</p>
+                  </div>
+
+                  {/* Recommendation */}
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-emerald-700">Strategic Advice</h4>
+                    <p className="text-sm leading-relaxed text-slate-700">{companyReview.recommendation}</p>
+                  </div>
+                </div>
+
+                {/* Pros & Cons */}
+                <div className="mt-6 grid gap-6 md:grid-cols-2">
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-green-600">Pros</h4>
+                    <ul className="space-y-1.5">
+                      {companyReview.pros.map((pro, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                          <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                          {pro}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-red-500">Cons</h4>
+                    <ul className="space-y-1.5">
+                      {companyReview.cons.map((con, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                          <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                          </svg>
+                          {con}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Glassdoor & Levels.fyi Insights */}
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <div className="rounded-lg border border-slate-200 bg-white p-4">
+                    <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Glassdoor Sentiment</h4>
+                    <p className="text-sm text-slate-700">{companyReview.glassdoor_sentiment}</p>
+                  </div>
+                  <div className="rounded-lg border border-slate-200 bg-white p-4">
+                    <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Levels.fyi Insight</h4>
+                    <p className="text-sm text-slate-700">{companyReview.levels_fyi_insight}</p>
+                  </div>
+                </div>
               </div>
             )}
           </>

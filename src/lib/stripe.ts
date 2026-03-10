@@ -45,7 +45,7 @@ export const TIER_CONFIG: Record<string, TierConfig> = {
   job_hunting: {
     name: "Job Hunting",
     priceId: process.env.STRIPE_PRICE_JOB_HUNTING ?? "price_job_hunting_placeholder",
-    monthlyPrice: 6,
+    monthlyPrice: 8,
     curationsPerMonth: 25,
   },
   beast: {

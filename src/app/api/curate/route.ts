@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { analyzeJD } from "@/lib/claude";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { canAccess } from "@/lib/tier-features";
-import type { AnalysisOptions } from "@/lib/claude";
+import type { AnalysisOptions, UserTier } from "@/lib/claude";
 
 export async function POST(request: Request) {
   try {
@@ -121,7 +121,8 @@ export async function POST(request: Request) {
         developing_skills: userProfile?.developing_skills ?? undefined,
         security_clearance: userProfile?.security_clearance ?? undefined,
       },
-      analysisOptions
+      analysisOptions,
+      tier as UserTier
     );
 
     // Insert result into cmr_applications only if tier supports tracking

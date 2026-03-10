@@ -48,7 +48,7 @@ export default function Nav() {
             href="/curate"
             className="mx-3 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-indigo-500 hover:shadow-lg hover:shadow-indigo-500/30"
           >
-            Diagnose
+            Resume Diagnosis
           </Link>
 
           {/* Right group */}
@@ -139,7 +139,7 @@ export default function Nav() {
               onClick={() => setMobileOpen(false)}
               className="block rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
             >
-              Diagnose
+              Resume Diagnosis
             </Link>
 
             {/* Nav links */}

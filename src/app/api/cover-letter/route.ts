@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { canAccess } from "@/lib/tier-features";
 import { curateCoverLetter } from "@/lib/claude";
-import type { CoverLetterTone } from "@/lib/claude";
+import type { CoverLetterTone, UserTier } from "@/lib/claude";
 
 const VALID_TONES: CoverLetterTone[] = [
   "professional",
@@ -100,7 +100,8 @@ export async function POST(request: Request) {
       application.jd_text,
       resume.raw_text,
       application.analysis_json,
-      validTone
+      validTone,
+      session.user.tier as UserTier
     );
 
     // Save to cmr_cover_letters

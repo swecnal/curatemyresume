@@ -16,6 +16,8 @@ interface PlanInfo {
   features: string[];
   antiFeatures: string[];
   highlighted: boolean;
+  cta: string;
+  ctaStyle: string;
 }
 
 const plans: PlanInfo[] = [
@@ -24,13 +26,13 @@ const plans: PlanInfo[] = [
     name: 'Free',
     price: '$0',
     period: '',
-    curations: '3 curations/month',
+    curations: '3 ResumeRx/month',
     features: [
-      '3 resume-to-JD curations per month',
-      'Fit score & go/no-go analysis',
-      'Basic resume tailoring per role',
-      'Basic gap analysis',
-      'PDF resume download',
+      '3 ResumeRx per month||Curate your resume to each job application',
+      'Fit score & go/no-go verdict||Instantly know if a role is worth applying to',
+      'Basic gap analysis||See where your resume falls short for each job',
+      'Basic tailoring suggestions||Get specific tips to improve your resume\'s fit',
+      'PDF export||Download your curated resume for each role',
     ],
     antiFeatures: [
       'No salary research',
@@ -39,45 +41,53 @@ const plans: PlanInfo[] = [
       'No ATS formatting',
     ],
     highlighted: false,
+    cta: 'Get Started Free',
+    ctaStyle: 'border border-slate-300 bg-white text-slate-700 hover:scale-105 hover:border-slate-200 hover:bg-slate-50 hover:shadow-md',
   },
   {
     tier: 'job_hunting',
     name: 'Job Hunting',
-    price: '$6',
+    price: '$8',
     period: '/month',
-    curations: '25 curations/month',
+    curations: '25 ResumeRx/month',
     features: [
-      '25 resume-to-JD curations per month',
-      'Everything in Free',
-      'ResumeRx ATS optimized formatting',
-      'Fair market salary research',
-      'Detailed skill gap breakdown',
-      'Application tracking',
-      'Priority analysis queue',
-      'Export curations to PDF',
+      '25 ResumeRx per month||Curate your resume to each job application',
+      'Everything in Free, plus:',
+      'ATS formatting||Make sure your resume is read the RIGHT way',
+      'Fair market salary research||Know what the role should pay before you negotiate',
+      'Detailed skill gap breakdown||Understand exactly which skills to highlight or develop',
+      'Application tracking||See what you applied to and when',
+      'Priority analysis queue||Faster AI-powered resume results',
+      'PDF export||Download your curated resume for each role',
     ],
     antiFeatures: [],
     highlighted: true,
+    cta: 'Find Your New Job',
+    ctaStyle: 'bg-indigo-600 text-white hover:scale-105 hover:bg-indigo-500 hover:shadow-md',
   },
   {
     tier: 'beast',
     name: 'PhD Mode',
     price: '$24',
     period: '/month',
-    curations: 'UNLIMITED curations',
+    curations: 'Unlimited ResumeRx',
     features: [
-      'UNLIMITED curations per month',
+      'Unlimited ResumeRx per month||Curate your resume to each job application',
       'Everything in Job Hunting',
-      'Bulk curation mode (multiple JDs at a time)',
-      'Custom resume tailoring per role',
-      'Company tone matching',
-      'Advanced salary research & negotiation insights',
-      'Resume Recall — save & download anytime',
-      'Optimized cover letters',
-      'Priority support',
+      'Our most powerful AI||Explicitly trained to land YOU the interview',
+      'Bulk ResumeRx||Save time with multiple curations at once',
+      'Custom resume tailoring per role||Each resume rewritten to match the specific job',
+      'Company tone matching||Startup? Enterprise? We match what they want',
+      'Advanced salary + negotiation insights||Know your leverage and total comp benchmarks',
+      'Resume Recall||Saves your curated resumes for future downloading',
+      'Optimized cover letters||Tailored cover letters that complement your resume',
+      'Company Reviews||Real insights into culture, pay, and interview process',
+      'Priority support||Get answers fast',
     ],
     antiFeatures: [],
     highlighted: false,
+    cta: 'Graduate to PhD Mode',
+    ctaStyle: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:scale-105 hover:from-violet-500 hover:to-indigo-500 hover:shadow-md',
   },
 ];
 
@@ -92,6 +102,8 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
             className={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:z-10 hover:scale-[1.20] hover:shadow-lg ${
               plan.highlighted
                 ? 'border-indigo-300 bg-white ring-2 ring-indigo-500'
+                : plan.tier === 'beast'
+                ? 'border-violet-200 bg-gradient-to-br from-violet-50/60 to-white'
                 : 'border-slate-200 bg-white'
             }`}
           >
@@ -116,22 +128,30 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
             </div>
 
             <ul className="mb-8 flex-1 space-y-3">
-              {plan.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                  <svg
-                    className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
-                      plan.highlighted ? 'text-indigo-500' : 'text-green-500'
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                  {feature}
-                </li>
-              ))}
+              {plan.features.map((feature, i) => {
+                const [mainText, subText] = feature.split('||');
+                return (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                    <svg
+                      className={`mt-0.5 h-4 w-4 flex-shrink-0 ${
+                        plan.highlighted ? 'text-indigo-500' : plan.tier === 'beast' ? 'text-violet-500' : 'text-green-500'
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <span>
+                      {mainText}
+                      {subText && (
+                        <span className="block text-xs text-slate-400">{subText}</span>
+                      )}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
 
             {/* Anti-features */}
@@ -160,12 +180,10 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
               className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                 isCurrent
                   ? 'cursor-not-allowed border border-slate-200 bg-slate-50 text-slate-400'
-                  : plan.highlighted
-                  ? 'bg-indigo-600 text-white hover:scale-105 hover:bg-indigo-500 hover:shadow-md'
-                  : 'border border-slate-300 bg-white text-slate-700 hover:scale-105 hover:border-slate-200 hover:bg-slate-50 hover:shadow-md'
+                  : plan.ctaStyle
               }`}
             >
-              {isCurrent ? 'Current Plan' : 'Upgrade'}
+              {isCurrent ? 'Current Plan' : plan.cta}
             </button>
           </div>
         );

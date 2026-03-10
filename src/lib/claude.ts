@@ -5,7 +5,26 @@ const apiKey = process.env.ANTHROPIC_API_KEY ?? "";
 
 const anthropic = new Anthropic({ apiKey });
 
-const MODEL = "claude-sonnet-4-20250514";
+// ---------------------------------------------------------------------------
+// Tiered model routing
+// ---------------------------------------------------------------------------
+
+export type UserTier = "free" | "job_hunting" | "beast";
+
+const MODEL_HAIKU = "claude-haiku-4-5-20251001";
+const MODEL_SONNET = "claude-sonnet-4-20250514";
+const MODEL_OPUS = "claude-opus-4-20250514";
+
+type TaskType = "analysis" | "parse" | "forge" | "tailor" | "cover_letter" | "company_review";
+
+function getModel(task: TaskType, tier: UserTier): string {
+  // Fit scoring, gap analysis, resume parsing — lightweight analytical tasks
+  if (task === "analysis" || task === "parse") {
+    return MODEL_HAIKU;
+  }
+  // Resume/cover letter writing — PhD (beast) gets Opus, others get Sonnet
+  return tier === "beast" ? MODEL_OPUS : MODEL_SONNET;
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -76,7 +95,8 @@ export async function analyzeJD(
   resumeText: string,
   jdText: string,
   userPrefs: UserPrefs,
-  options: AnalysisOptions = {}
+  options: AnalysisOptions = {},
+  tier: UserTier = "free"
 ): Promise<JDAnalysis> {
   const salaryContext = buildSalaryContext(userPrefs);
   const locationContext = userPrefs.location_preferences?.length
@@ -187,7 +207,7 @@ Respond with ONLY valid JSON matching this exact structure (no markdown, no extr
   const maxTokens = options.advancedSalary ? 3000 : options.salaryResearch || options.detailedGapAnalysis ? 2500 : 1500;
 
   const response = await anthropic.messages.create({
-    model: MODEL,
+    model: getModel("analysis", tier),
     max_tokens: maxTokens,
     system: systemPrompt,
     messages: [
@@ -250,7 +270,7 @@ export interface ParsedProfile {
   certifications: string[];
 }
 
-export async function parseResume(resumeText: string): Promise<ParsedProfile> {
+export async function parseResume(resumeText: string, tier: UserTier = "free"): Promise<ParsedProfile> {
   const systemPrompt = `You are an expert resume parser. Extract structured data from the provided resume text. Be thorough and accurate — pull every detail available.
 
 For years_experience: estimate total years of professional experience based on employment dates. If dates are ambiguous, make a reasonable estimate.
@@ -293,7 +313,7 @@ Respond with ONLY valid JSON matching this exact structure (no markdown, no extr
 }`;
 
   const response = await anthropic.messages.create({
-    model: MODEL,
+    model: getModel("parse", tier),
     max_tokens: 3000,
     system: systemPrompt,
     messages: [
@@ -320,7 +340,8 @@ export interface ForgedResume {
 
 export async function forgeResume(
   resumeText: string,
-  parsedProfile: ParsedProfile
+  parsedProfile: ParsedProfile,
+  tier: UserTier = "free"
 ): Promise<ForgedResume> {
   const systemPrompt = `You are ResumeRx, an expert ATS resume formatter. Your job is to reformat the candidate's resume into a clean, ATS-optimized format that will pass automated screening systems.
 
@@ -346,7 +367,7 @@ CONTENT RULES:
 Return ONLY the formatted resume text — no commentary, no JSON wrapper, no markdown code blocks.`;
 
   const response = await anthropic.messages.create({
-    model: MODEL,
+    model: getModel("forge", tier),
     max_tokens: 4000,
     system: systemPrompt,
     messages: [
@@ -378,7 +399,8 @@ export async function tailorResume(
   jdText: string,
   fitAnalysis: JDAnalysis,
   skillTiers?: { strong_skills?: string[]; developing_skills?: string[] },
-  companyType?: CompanyType
+  companyType?: CompanyType,
+  tier: UserTier = "free"
 ): Promise<TailoredResume> {
   const skillTierRules = (skillTiers?.strong_skills?.length || skillTiers?.developing_skills?.length)
     ? `\nSKILL TIER RULES:
@@ -436,7 +458,7 @@ Respond with ONLY valid JSON (no markdown, no code blocks):
 }`;
 
   const response = await anthropic.messages.create({
-    model: MODEL,
+    model: getModel("tailor", tier),
     max_tokens: 5000,
     system: systemPrompt,
     messages: [
@@ -469,7 +491,8 @@ export async function curateCoverLetter(
   jdText: string,
   resumeText: string,
   fitAnalysis: JDAnalysis,
-  tone: CoverLetterTone = "professional"
+  tone: CoverLetterTone = "professional",
+  tier: UserTier = "beast"
 ): Promise<CuratedCoverLetter> {
   const toneInstructions: Record<CoverLetterTone, string> = {
     professional: "Maintain a polished, professional tone. Clear and confident without being stiff.",
@@ -503,7 +526,7 @@ Respond with ONLY valid JSON (no markdown, no code blocks):
 }`;
 
   const response = await anthropic.messages.create({
-    model: MODEL,
+    model: getModel("cover_letter", tier),
     max_tokens: 2000,
     system: systemPrompt,
     messages: [
@@ -517,5 +540,70 @@ Respond with ONLY valid JSON (no markdown, no code blocks):
   const raw =
     response.content[0].type === "text" ? response.content[0].text : "";
   const parsed: CuratedCoverLetter = JSON.parse(stripCodeBlock(raw));
+  return parsed;
+}
+
+// ---------------------------------------------------------------------------
+// 6. generateCompanyReview (PhD Mode)
+// ---------------------------------------------------------------------------
+
+export interface CompanyReview {
+  company_name: string;
+  overall_rating: number;
+  culture_summary: string;
+  compensation_summary: string;
+  interview_process: string;
+  pros: string[];
+  cons: string[];
+  glassdoor_sentiment: string;
+  levels_fyi_insight: string;
+  recommendation: string;
+}
+
+export async function generateCompanyReview(
+  companyName: string,
+  roleTitle: string,
+  tier: UserTier = "beast"
+): Promise<CompanyReview> {
+  const systemPrompt = `You are an expert career research analyst with deep knowledge of company cultures, compensation practices, and hiring processes across the tech and business landscape.
+
+Your job is to synthesize a comprehensive company review based on your training data — the kind of insights a candidate would find on Glassdoor, Levels.fyi, Blind, and TeamBlind, combined with industry knowledge.
+
+IMPORTANT GUIDELINES:
+- Base your analysis on patterns from your training data about this company
+- If you have limited data about the company, be transparent about confidence level
+- Focus on information relevant to the specific role title provided
+- Be balanced — include both positives and negatives
+- Provide actionable insights, not generic platitudes
+
+Respond with ONLY valid JSON (no markdown, no code blocks):
+{
+  "company_name": "string (official company name)",
+  "overall_rating": number (1-5 scale, based on general employee sentiment),
+  "culture_summary": "string (2-3 sentences on work culture, values, work-life balance)",
+  "compensation_summary": "string (2-3 sentences on comp philosophy, pay competitiveness, equity/bonus norms for this role level)",
+  "interview_process": "string (2-3 sentences on typical interview stages, what to expect, timeline)",
+  "pros": ["string (4-6 specific positives)"],
+  "cons": ["string (3-5 specific negatives or concerns)"],
+  "glassdoor_sentiment": "string (1-2 sentences summarizing the general Glassdoor-style sentiment — what employees commonly praise and complain about)",
+  "levels_fyi_insight": "string (1-2 sentences on compensation positioning — how this company's total comp compares to market for this role)",
+  "recommendation": "string (2-3 sentences of strategic advice for the candidate applying to this specific role at this company)"
+}`;
+
+  const response = await anthropic.messages.create({
+    model: getModel("company_review", tier),
+    max_tokens: 2000,
+    system: systemPrompt,
+    messages: [
+      {
+        role: "user",
+        content: `Generate a comprehensive company review for:\n\nCompany: ${companyName}\nRole: ${roleTitle}\n\nProvide insights on culture, compensation, interview process, and strategic advice for a candidate targeting this role.`,
+      },
+    ],
+  });
+
+  const raw =
+    response.content[0].type === "text" ? response.content[0].text : "";
+  const parsed: CompanyReview = JSON.parse(stripCodeBlock(raw));
   return parsed;
 }

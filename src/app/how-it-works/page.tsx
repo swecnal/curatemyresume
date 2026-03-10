@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ContactForm from '@/components/ContactForm';
 
 const steps = [
   {
@@ -270,6 +271,29 @@ export default function HowItWorksPage() {
                 <p className="text-sm leading-relaxed text-slate-600">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
+        <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-center text-3xl font-extrabold text-slate-900">
+            Get in Touch
+          </h2>
+          <p className="mx-auto max-w-lg text-center text-base text-slate-600">
+            Questions, feedback, or just want to say hello? Drop us a line.
+          </p>
+          <p className="mt-4 text-center text-sm font-medium">
+            <a
+              href="mailto:hello@resumemd.ai"
+              className="text-indigo-600 underline underline-offset-2 transition-colors hover:text-indigo-800"
+            >
+              hello@resumemd.ai
+            </a>
+          </p>
+          <div className="mt-10">
+            <ContactForm />
           </div>
         </div>
       </section>

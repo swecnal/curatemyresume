@@ -112,8 +112,13 @@ export default function CompanyPage() {
           <p className="text-base text-slate-600">
             Questions, feedback, or partnership inquiries? We&apos;d love to hear from you.
           </p>
-          <p className="mt-4 text-sm font-medium text-indigo-600">
-            hello@resumemd.ai
+          <p className="mt-4 text-sm font-medium">
+            <a
+              href="mailto:hello@resumemd.ai"
+              className="text-indigo-600 underline underline-offset-2 transition-colors hover:text-indigo-800"
+            >
+              hello@resumemd.ai
+            </a>
           </p>
         </div>
       </section>

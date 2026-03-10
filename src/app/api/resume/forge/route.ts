@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { forgeResume } from "@/lib/claude";
+import type { UserTier } from "@/lib/claude";
 import { canAccess } from "@/lib/tier-features";
 
 export async function POST(request: NextRequest) {
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Call Claude to forge the resume into ATS-optimized format
-    const forged = await forgeResume(resume.raw_text, resume.parsed_profile);
+    const forged = await forgeResume(resume.raw_text, resume.parsed_profile, session.user.tier as UserTier);
 
     // Save the forged resume as a new cmr_resumes entry (not active)
     const { data: forgedResume, error: insertError } = await supabase

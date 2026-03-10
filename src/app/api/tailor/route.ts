@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { tailorResume } from "@/lib/claude";
 import { canAccess } from "@/lib/tier-features";
-import type { JDAnalysis, CompanyType } from "@/lib/claude";
+import type { JDAnalysis, CompanyType, UserTier } from "@/lib/claude";
 
 export async function POST(request: Request) {
   try {
@@ -117,7 +117,8 @@ export async function POST(request: Request) {
         strong_skills: userProfile?.strong_skills ?? undefined,
         developing_skills: userProfile?.developing_skills ?? undefined,
       },
-      resolvedCompanyType
+      resolvedCompanyType,
+      tier as UserTier
     );
 
     // Insert into cmr_tailored_resumes only if we have an application context

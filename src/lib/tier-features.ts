@@ -13,6 +13,7 @@ export interface TierFeatures {
   pdfExport: boolean;
   detailedGapAnalysis: boolean;
   companyToneMatching: boolean;
+  companyReviews: boolean;
 }
 
 const TIER_FEATURES: Record<TierKey, TierFeatures> = {
@@ -29,6 +30,7 @@ const TIER_FEATURES: Record<TierKey, TierFeatures> = {
     pdfExport: true,
     detailedGapAnalysis: false,
     companyToneMatching: false,
+    companyReviews: false,
   },
   job_hunting: {
     resumeForge: true,
@@ -43,6 +45,7 @@ const TIER_FEATURES: Record<TierKey, TierFeatures> = {
     pdfExport: true,
     detailedGapAnalysis: true,
     companyToneMatching: false,
+    companyReviews: false,
   },
   beast: {
     resumeForge: true,
@@ -57,6 +60,7 @@ const TIER_FEATURES: Record<TierKey, TierFeatures> = {
     pdfExport: true,
     detailedGapAnalysis: true,
     companyToneMatching: true,
+    companyReviews: true,
   },
 };
 

@@ -1,139 +1,35 @@
 import Link from 'next/link';
 import Logo from '@/components/Logo';
 import StatsSection from '@/components/StatsSection';
+import HeroAB from '@/components/HeroAB';
 
 export default function LandingPage() {
   return (
     <div className="bg-white">
-      {/* Hero — Dark gradient with floating shapes */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
-        {/* Decorative floating shapes — high contrast, recognizable */}
-        <div className="pointer-events-none absolute inset-0">
-          {/* Stethoscope — top right */}
-          <svg className="absolute -right-4 -top-4 opacity-[0.14]" width="360" height="360" viewBox="0 0 360 360" fill="none">
-            {/* Earpieces */}
-            <circle cx="100" cy="40" r="14" stroke="#a5b4fc" strokeWidth="3" />
-            <circle cx="160" cy="40" r="14" stroke="#a5b4fc" strokeWidth="3" />
-            {/* Tubing from earpieces down to Y-junction */}
-            <path d="M100 54 C100 100, 120 120, 130 140" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
-            <path d="M160 54 C160 100, 140 120, 130 140" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
-            {/* Single tube down to chest piece */}
-            <path d="M130 140 C130 200, 130 240, 200 260 C240 270, 260 250, 260 220" stroke="#a5b4fc" strokeWidth="3" strokeLinecap="round" />
-            {/* Chest piece (bell) */}
-            <circle cx="260" cy="200" r="28" stroke="#818cf8" strokeWidth="3.5" />
-            <circle cx="260" cy="200" r="14" fill="#818cf8" opacity="0.2" />
-          </svg>
+      {/* Hero — A/B tested */}
+      <HeroAB />
 
-          {/* Resume document — bottom left */}
-          <svg className="absolute -bottom-10 -left-4 opacity-[0.13]" width="280" height="340" viewBox="0 0 280 340" fill="none">
-            {/* Page with folded corner */}
-            <path d="M40 20 H200 L230 50 V300 Q230 310 220 310 H50 Q40 310 40 300 Z" stroke="#a5b4fc" strokeWidth="2.5" fill="none" />
-            <path d="M200 20 V50 H230" stroke="#a5b4fc" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
-            {/* Photo placeholder */}
-            <rect x="60" y="50" width="40" height="48" rx="4" stroke="#818cf8" strokeWidth="2" fill="#818cf8" opacity="0.1" />
-            {/* Name line */}
-            <rect x="115" y="55" width="90" height="8" rx="4" fill="#a5b4fc" opacity="0.4" />
-            {/* Subtitle line */}
-            <rect x="115" y="72" width="65" height="6" rx="3" fill="#a5b4fc" opacity="0.25" />
-            {/* Section header */}
-            <rect x="60" y="120" width="50" height="6" rx="3" fill="#818cf8" opacity="0.35" />
-            {/* Text lines */}
-            <rect x="60" y="140" width="150" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-            <rect x="60" y="155" width="130" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-            <rect x="60" y="170" width="145" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-            {/* Section header 2 */}
-            <rect x="60" y="200" width="60" height="6" rx="3" fill="#818cf8" opacity="0.35" />
-            {/* More text lines */}
-            <rect x="60" y="220" width="140" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-            <rect x="60" y="235" width="120" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-            <rect x="60" y="250" width="150" height="5" rx="2.5" fill="#a5b4fc" opacity="0.2" />
-          </svg>
-
-          {/* Target/bullseye — center right (fit score) */}
-          <svg className="absolute right-1/4 top-1/2 -translate-y-1/2 opacity-[0.08]" width="200" height="200" viewBox="0 0 200 200" fill="none">
-            <circle cx="100" cy="100" r="80" stroke="#818cf8" strokeWidth="2" />
-            <circle cx="100" cy="100" r="55" stroke="#818cf8" strokeWidth="2" />
-            <circle cx="100" cy="100" r="30" stroke="#818cf8" strokeWidth="2" />
-            <circle cx="100" cy="100" r="10" fill="#818cf8" opacity="0.3" />
-          </svg>
-
-          {/* Checkmark badge — top left */}
-          <svg className="absolute left-12 top-20 opacity-[0.10]" width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="40" stroke="#a5b4fc" strokeWidth="2.5" />
-            <path d="M30 52 L44 66 L72 38" stroke="#a5b4fc" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-28 pt-24 sm:px-6 sm:pb-36 sm:pt-32 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-6 inline-flex items-center rounded-full bg-indigo-500/20 px-4 py-1.5 text-sm font-medium text-indigo-300">
-              AI-Powered Resume Diagnostics
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
-              <span className="block">Stop Guessing.</span>
-              <span className="block bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400 bg-clip-text pb-2 text-transparent sm:text-7xl" style={{ letterSpacing: '0.01em' }}>
-                Start Landing.
-              </span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg font-semibold text-white">
-              Land your next role with ResumeMD.
-            </p>
-            <p className="mx-auto mt-3 max-w-2xl text-base leading-8 text-indigo-200">
-              Upload your resume and any job listing — our ResumeMD utilizes cutting-edge AI
-              to diagnose your fit, identifies your gaps, and rewrites your resume &amp; cover
-              letter to match each role <em className="italic">perfectly</em>. Fit scores,
-              salary insights, and a tailored resume in seconds.
-            </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="/try"
-                className="inline-block rounded-xl bg-white px-10 py-4 text-base font-extrabold text-indigo-700 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 hover:bg-indigo-50 hover:shadow-xl hover:shadow-indigo-500/30"
-              >
-                Diagnose Your Resume Free
-              </Link>
-              <Link
-                href="/how-it-works"
-                className="inline-block rounded-xl border border-indigo-400/40 px-8 py-4 text-base font-semibold text-indigo-200 transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-500/10 hover:text-white"
-              >
-                Why it Works
-              </Link>
-            </div>
-            <div className="mt-4">
-              <p className="text-sm text-indigo-400">
-                Already have an account?{' '}
-                <Link href="/login" className="font-medium text-indigo-300 underline underline-offset-2 hover:text-white">
-                  Sign in
-                </Link>
-              </p>
-            </div>
-          </div>
-
-          {/* Results stats row */}
-          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-6 sm:gap-8">
-            <div className="text-center">
-              <p className="text-3xl font-extrabold text-white sm:text-4xl">85%</p>
-              <p className="mt-1 text-sm text-indigo-300">Time Saved on Tailoring</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-extrabold text-white sm:text-4xl">3x</p>
-              <p className="mt-1 text-sm text-indigo-300">More Interview Callbacks*</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-extrabold text-white sm:text-4xl">&lt;2 min</p>
-              <p className="mt-1 text-sm text-indigo-300">Average Diagnosis Time</p>
-            </div>
-          </div>
-          <p className="mx-auto mt-4 max-w-xl text-center text-xs text-indigo-400/60">
-            *Based on early user data and projected outcomes.
-          </p>
-        </div>
-      </section>
+      {/* Wave divider: hero → stats */}
+      <div className="relative -mt-1" style={{ backgroundColor: '#0f172a' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '80px' }}
+        >
+          <path
+            d="M0 40 C360 80, 720 0, 1080 40 S1440 60, 1440 40 L1440 80 L0 80 Z"
+            fill="#f1f5f9"
+          />
+        </svg>
+      </div>
 
       {/* Stats */}
       <StatsSection />
 
       {/* Features */}
-      <section id="features" className="border-t border-slate-200 bg-slate-50 py-24">
+      <section id="features" className="border-t border-slate-200 bg-gradient-to-br from-slate-50 via-indigo-50/50 to-blue-50/40 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
@@ -150,7 +46,7 @@ export default function LandingPage() {
             <Link href="/try" className="group">
               <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
-                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50">
+                <div className="animate-float mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-50">
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
                     {/* Clipboard */}
                     <rect x="10" y="8" width="24" height="32" rx="3" fill="#e0e7ff" stroke="#6366f1" strokeWidth="1.5" />
@@ -183,7 +79,7 @@ export default function LandingPage() {
             <Link href="/try" className="group">
               <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
-                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50">
+                <div className="animate-float mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50" style={{ animationDelay: '0.5s' }}>
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
                     {/* Document */}
                     <rect x="8" y="4" width="24" height="34" rx="3" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1.5" />
@@ -214,7 +110,7 @@ export default function LandingPage() {
             <Link href="/signup" className="group">
               <div className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 group-hover:scale-[1.20] group-hover:shadow-lg">
                 {/* Large illustration */}
-                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-violet-50">
+                <div className="animate-float mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-violet-50" style={{ animationDelay: '1s' }}>
                   <svg className="h-12 w-12" viewBox="0 0 48 48" fill="none">
                     {/* Stacked documents */}
                     <rect x="14" y="10" width="20" height="28" rx="2" fill="#ede9fe" stroke="#8b5cf6" strokeWidth="1" opacity="0.6" />
@@ -231,14 +127,15 @@ export default function LandingPage() {
                   PhD Mode <span className="ml-1">&#127891;</span>
                 </h3>
                 <p className="flex-1 text-sm leading-relaxed text-slate-600">
-                  <strong className="text-slate-900">Unlimited</strong> diagnoses. Bulk-analyze
-                  multiple roles at a time. Custom tailoring per position. Optimized cover letters.
-                  Salary negotiation intel. Total job hunt domination.
+                  <strong className="text-slate-900">Unlimited</strong> diagnoses. Powered by{' '}
+                  <strong className="text-slate-900">ultra-advanced AI</strong> — explicitly
+                  engineered to land interviews. Bulk-analyze multiple roles. Custom tailoring.
+                  Cover letters. Salary negotiation intel. Total job hunt domination.
                 </p>
                 {/* Hover CTA — bolder for PhD Mode */}
                 <div className="mt-6 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                   <span className="inline-block rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm">
-                    Activate PhD Mode
+                    Graduate to PhD Mode
                   </span>
                 </div>
               </div>
@@ -247,8 +144,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Soft divider: features → how-it-works */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* How It Works — Process Steps */}
-      <section className="border-t border-slate-200 bg-white py-16">
+      <section className="bg-gradient-to-b from-indigo-50/60 via-blue-50/40 to-white py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 text-center text-2xl font-extrabold text-slate-900">
             Four Steps to Job-winning Resumes.
@@ -272,13 +172,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="border-t border-slate-200 bg-slate-50 py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-slate-900">
-            Real Results from Real Job Seekers
+      {/* Wave divider: how-it-works → testimonials (light → dark) */}
+      <div className="relative" style={{ backgroundColor: '#ffffff' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '80px' }}
+        >
+          <path
+            d="M0 40 C480 80, 960 0, 1440 40 L1440 80 L0 80 Z"
+            fill="#0f172a"
+          />
+        </svg>
+      </div>
+
+      {/* Testimonials — Dark section for visual contrast */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 py-24">
+        {/* Decorative background elements */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-32 top-1/4 h-64 w-64 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="absolute -right-32 bottom-1/4 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-extrabold text-white">
+            <em className="italic">Real</em> Results from <em className="italic">Real</em> Job Seekers
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-500">
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-indigo-200">
             Here&apos;s what happens when you stop guessing and start diagnosing.
           </p>
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 md:grid-cols-3">
@@ -291,7 +212,7 @@ export default function LandingPage() {
                 initials: 'MR',
                 name: 'Marcus R.',
                 role: 'Software Engineer — Atlanta, GA',
-                color: 'bg-indigo-100 text-indigo-600',
+                color: 'bg-indigo-500/20 text-indigo-300',
               },
               {
                 quote:
@@ -301,7 +222,7 @@ export default function LandingPage() {
                 initials: 'JT',
                 name: 'Jasmine T.',
                 role: 'Product Manager — Chicago, IL',
-                color: 'bg-blue-100 text-blue-600',
+                color: 'bg-blue-500/20 text-blue-300',
               },
               {
                 quote:
@@ -311,10 +232,10 @@ export default function LandingPage() {
                 initials: 'DK',
                 name: 'David K.',
                 role: 'Data Analyst — Austin, TX',
-                color: 'bg-violet-100 text-violet-600',
+                color: 'bg-violet-500/20 text-violet-300',
               },
             ].map((t) => (
-              <div key={t.initials} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div key={t.initials} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10">
                 <div className="mb-4 flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <svg key={i} className="h-5 w-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
@@ -322,16 +243,16 @@ export default function LandingPage() {
                     </svg>
                   ))}
                 </div>
-                <p className="text-sm leading-relaxed text-slate-600">
-                  &ldquo;{t.quote} <strong className="text-slate-900">{t.result}</strong>{t.suffix}&rdquo;
+                <p className="text-sm leading-relaxed text-slate-300">
+                  &ldquo;{t.quote} <strong className="text-white">{t.result}</strong>{t.suffix}&rdquo;
                 </p>
                 <div className="mt-6 flex items-center gap-3">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${t.color}`}>
                     {t.initials}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                    <p className="text-xs text-slate-500">{t.role}</p>
+                    <p className="text-sm font-semibold text-white">{t.name}</p>
+                    <p className="text-xs text-slate-400">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -340,8 +261,24 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Wave divider: testimonials → pricing (dark → light) */}
+      <div className="relative" style={{ backgroundColor: '#1e1b4b' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '80px' }}
+        >
+          <path
+            d="M0 40 C360 0, 720 80, 1080 40 S1440 20, 1440 40 L1440 80 L0 80 Z"
+            fill="#eef2ff"
+          />
+        </svg>
+      </div>
+
       {/* Pricing */}
-      <section id="pricing" className="border-t border-slate-200 bg-white py-24">
+      <section id="pricing" className="bg-gradient-to-br from-indigo-50 via-white to-blue-50/60 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
@@ -357,8 +294,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Gradient divider: pricing → FAQ */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* FAQ */}
-      <section className="border-t border-slate-200 bg-slate-50 py-24">
+      <section className="bg-gradient-to-b from-slate-50 via-indigo-50/30 to-slate-50 py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center text-3xl font-extrabold text-slate-900">
             Frequently Asked Questions
@@ -406,8 +346,22 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Angled divider: FAQ → CTA */}
+      <div className="relative" style={{ backgroundColor: '#f8fafc' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 60"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '60px' }}
+        >
+          <path d="M0 60 L0 20 Q720 -20, 1440 20 L1440 60 Z" fill="#f8fafc" />
+          <path d="M0 60 L0 40 Q720 0, 1440 40 L1440 60 Z" fill="#4f46e5" />
+        </svg>
+      </div>
+
       {/* CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
+      <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
             <span className="block">Stop Sending Your Resume</span>
@@ -448,13 +402,13 @@ function LandingPricingSection() {
       name: 'Free \ud83c\udf89',
       price: '$0',
       period: '',
-      curations: '3 diagnoses/month',
+      curations: '3 ResumeRx/month',
       features: [
-        '3 resume-to-JD diagnoses per month',
-        'Fit score & go/no-go verdict',
-        'Basic gap analysis',
-        'Basic tailoring suggestions',
-        'PDF export',
+        '3 ResumeRx per month||Curate your resume to each job application',
+        'Fit score & go/no-go verdict||Instantly know if a role is worth applying to',
+        'Basic gap analysis||See where your resume falls short for each job',
+        'Basic tailoring suggestions||Get specific tips to improve your resume\'s fit',
+        'PDF export||Download your curated resume for each role',
       ],
       antiFeatures: [
         'No salary research',
@@ -468,18 +422,18 @@ function LandingPricingSection() {
     },
     {
       name: 'Job Hunting \ud83d\udd0d',
-      price: '$6',
+      price: '$8',
       period: '/month',
-      curations: '25 diagnoses/month',
+      curations: '25 ResumeRx/month',
       features: [
-        '25 resume-to-JD diagnoses per month',
-        'Everything in Free',
-        'ResumeRx — ATS formatting',
-        'Fair market salary research',
-        'Detailed skill gap breakdown',
-        'Application tracking',
-        'Priority analysis queue',
-        'PDF export',
+        '25 ResumeRx per month||Curate your resume to each job application',
+        'Everything in Free, plus:',
+        'ATS formatting||Make sure your resume is read the RIGHT way',
+        'Fair market salary research||Know what the role should pay before you negotiate',
+        'Detailed skill gap breakdown||Understand exactly which skills to highlight or develop',
+        'Application tracking||See what you applied to and when',
+        'Priority analysis queue||Faster AI-powered resume results',
+        'PDF export||Download your curated resume for each role',
       ],
       highlighted: true,
       cta: 'Find Your New Job',
@@ -489,20 +443,22 @@ function LandingPricingSection() {
       name: 'PhD Mode \ud83c\udf93',
       price: '$24',
       period: '/month',
-      curations: 'Unlimited diagnoses',
+      curations: 'Unlimited ResumeRx',
       features: [
-        '**Unlimited** diagnoses per month',
+        '**Unlimited** ResumeRx per month||Curate your resume to each job application',
         'Everything in Job Hunting',
-        'Bulk diagnosis (multiple JDs at a time)',
-        'Custom resume tailoring per role',
-        'Company tone matching',
-        'Advanced salary + negotiation insights',
-        'Resume Recall (stored resumes)',
-        'Optimized cover letters',
-        'Priority support',
+        'Our most powerful AI||Explicitly trained to land YOU the interview',
+        'Bulk ResumeRx||Save time with multiple curations at once',
+        'Custom resume tailoring per role||Each resume rewritten to match the specific job',
+        'Company tone matching||Startup? Enterprise? We match what they want',
+        'Advanced salary + negotiation insights||Know your leverage and total comp benchmarks',
+        'Resume Recall||Saves your curated resumes for future downloading',
+        'Optimized cover letters||Tailored cover letters that complement your resume',
+        'Company Reviews||Real insights into culture, pay, and interview process',
+        'Priority support||Get answers fast',
       ],
       highlighted: false,
-      cta: 'Go PhD Mode \ud83c\udf93',
+      cta: 'Graduate to PhD Mode',
       ctaStyle: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:scale-105 hover:from-violet-500 hover:to-indigo-500 hover:shadow-md',
     },
   ];
@@ -520,7 +476,7 @@ function LandingPricingSection() {
         >
           {plan.highlighted && (
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white">
+              <span className="animate-shimmer rounded-full bg-gradient-to-r from-indigo-600 via-indigo-400 to-indigo-600 px-3 py-1 text-xs font-semibold text-white">
                 Most Popular
               </span>
             </div>
@@ -535,8 +491,10 @@ function LandingPricingSection() {
           </div>
           <ul className="mb-8 flex-1 space-y-3">
             {plan.features.map((feature, i) => {
+              // Handle ||subtext separator
+              const [mainText, subText] = feature.split('||');
               // Handle **bold** syntax
-              const parts = feature.split(/\*\*(.*?)\*\*/);
+              const parts = mainText.split(/\*\*(.*?)\*\*/);
               return (
                 <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
                   <svg
@@ -551,12 +509,17 @@ function LandingPricingSection() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
                   <span>
-                    {parts.map((part, j) =>
-                      j % 2 === 1 ? (
-                        <strong key={j} className="font-bold text-slate-900">{part}</strong>
-                      ) : (
-                        part
-                      )
+                    <span>
+                      {parts.map((part, j) =>
+                        j % 2 === 1 ? (
+                          <strong key={j} className="font-bold text-slate-900">{part}</strong>
+                        ) : (
+                          part
+                        )
+                      )}
+                    </span>
+                    {subText && (
+                      <span className="block text-xs text-slate-400">{subText}</span>
                     )}
                   </span>
                 </li>

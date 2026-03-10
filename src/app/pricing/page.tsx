@@ -13,35 +13,35 @@ const tierBreakdowns = [
     color: 'border-slate-200',
     bg: 'bg-white',
     whatYouGet: [
-      '3 resume-to-JD diagnoses per month',
+      '3 ResumeRx per month',
       'Instant fit score with go/no-go verdict',
       'Basic gap analysis showing matched vs missing skills',
       'Basic tailoring suggestions per role',
-      'PDF download of your diagnosis',
+      'PDF download of your curated resume',
     ],
     whoItsFor:
       'Casual job seekers exploring options, or anyone who wants to test ResumeMD before committing. See if your resume actually matches the roles you want — zero risk.',
     whyItMatters:
-      'Most people apply blind. Even 3 diagnoses a month gives you clarity on which roles are worth pursuing and which ones will waste your time.',
+      'Most people apply blind. Even 3 ResumeRx a month gives you clarity on which roles are worth pursuing and which ones will waste your time.',
   },
   {
     name: 'Job Hunting',
-    price: '$6/mo',
+    price: '$8/mo',
     color: 'border-indigo-200',
     bg: 'bg-indigo-50/30',
     whatYouGet: [
-      '25 diagnoses per month — enough for a serious job search',
-      'ResumeRx ATS formatting to get past automated screening',
+      '25 ResumeRx per month — enough for a serious job search',
+      'ATS formatting to get past automated screening',
       'Fair market salary research for every role',
       'Detailed skill gap breakdown with actionable insights',
       'Application tracking to manage your pipeline',
       'Priority analysis queue — faster results',
-      'Full PDF export of diagnoses and tailored resumes',
+      'Full PDF export of curated resumes',
     ],
     whoItsFor:
       'Active job seekers applying to multiple roles per week. You know what you want — you need every application to count.',
     whyItMatters:
-      'Companies use ATS systems that auto-reject up to 75% of applicants before a human ever sees their resume. ResumeRx formats your resume to get past the bots. Salary research ensures you never lowball yourself.',
+      'Companies use ATS systems that auto-reject up to 75% of applicants before a human ever sees their resume. ATS formatting gets your resume past the bots. Salary research ensures you never lowball yourself.',
   },
   {
     name: 'PhD Mode \ud83c\udf93',
@@ -49,18 +49,20 @@ const tierBreakdowns = [
     color: 'border-violet-200',
     bg: 'bg-violet-50/20',
     whatYouGet: [
-      'Unlimited diagnoses — no monthly cap',
-      'Bulk analysis: diagnose multiple JDs at a time',
+      'Unlimited ResumeRx — no monthly cap',
+      'Powered by our most advanced AI model',
+      'Bulk analysis: curate multiple JDs at a time',
       'Custom resume tailoring per role with company tone matching',
       'Optimized cover letters generated per application',
       'Advanced salary research with negotiation talking points',
+      'Company Reviews — culture, comp, and interview insights',
       'Resume Recall — your resumes stored and downloadable anytime',
       'Priority support',
     ],
     whoItsFor:
       'Serious job hunters who want total coverage. You\'re applying aggressively, targeting multiple companies, and need every edge possible.',
     whyItMatters:
-      'Every role gets a perfectly tailored resume and cover letter. Bulk analysis means you diagnose an entire week\'s worth of applications in minutes. Salary negotiation intel alone can pay for months of PhD Mode with a single offer.',
+      'PhD Mode uses our most powerful AI — explicitly trained to land you the interview. Every role gets a perfectly tailored resume and cover letter. Bulk analysis means you curate an entire week\'s worth of applications in minutes. Salary negotiation intel alone can pay for months of PhD Mode with a single offer.',
   },
 ];
 

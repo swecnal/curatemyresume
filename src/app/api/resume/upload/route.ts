@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { parseResume } from "@/lib/claude";
+import type { UserTier } from "@/lib/claude";
 import { extractResumeText } from "@/lib/parse-resume";
 import { randomUUID } from "crypto";
 import { canAccess } from "@/lib/tier-features";
@@ -55,10 +56,10 @@ export async function POST(request: Request) {
       rawText = body.text.trim();
     }
 
-    // Parse resume with Claude to extract structured profile
-    const parsedProfile = await parseResume(rawText);
+    const tier = (session.user.tier ?? "free") as UserTier;
 
-    const tier = session.user.tier ?? "free";
+    // Parse resume with Claude to extract structured profile
+    const parsedProfile = await parseResume(rawText, tier);
     const shouldStore = canAccess(tier, "resumeStorage");
 
     // For non-storage tiers (Free, Job Hunting): return parsed data without persisting
