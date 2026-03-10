@@ -20,30 +20,32 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!captchaToken) {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification is required.' },
-        { status: 400 },
-      );
-    }
+    // Verify reCAPTCHA when configured
+    if (RECAPTCHA_SECRET) {
+      if (!captchaToken) {
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification is required.' },
+          { status: 400 },
+        );
+      }
 
-    // Verify reCAPTCHA token with Google
-    const recaptchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        secret: RECAPTCHA_SECRET,
-        response: captchaToken,
-      }),
-    });
+      const recaptchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret: RECAPTCHA_SECRET,
+          response: captchaToken,
+        }),
+      });
 
-    const recaptchaData = await recaptchaRes.json();
+      const recaptchaData = await recaptchaRes.json();
 
-    if (!recaptchaData.success) {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification failed. Please try again.' },
-        { status: 400 },
-      );
+      if (!recaptchaData.success) {
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 400 },
+        );
+      }
     }
 
     // Store in Supabase

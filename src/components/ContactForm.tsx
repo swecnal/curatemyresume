@@ -1,23 +1,26 @@
 'use client';
 
-import { useState, useRef, FormEvent } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useState, FormEvent } from 'react';
+import dynamic from 'next/dynamic';
+
+const ReCAPTCHA = dynamic(() => import('react-google-recaptcha'), { ssr: false });
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setStatus('submitting');
     setErrorMsg('');
 
-    const captchaToken = recaptchaRef.current?.getValue();
-    if (!captchaToken) {
+    if (RECAPTCHA_SITE_KEY && !captchaToken) {
       setStatus('error');
       setErrorMsg('Please complete the reCAPTCHA.');
       return;
@@ -39,7 +42,7 @@ export default function ContactForm() {
       setName('');
       setEmail('');
       setMessage('');
-      recaptchaRef.current?.reset();
+      setCaptchaToken('');
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Something went wrong.');
@@ -108,12 +111,15 @@ export default function ContactForm() {
         />
       </div>
 
-      <div className="flex justify-center">
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''}
-        />
-      </div>
+      {RECAPTCHA_SITE_KEY && (
+        <div className="flex justify-center">
+          <ReCAPTCHA
+            sitekey={RECAPTCHA_SITE_KEY}
+            onChange={(token: string | null) => setCaptchaToken(token ?? '')}
+            onExpired={() => setCaptchaToken('')}
+          />
+        </div>
+      )}
 
       {status === 'error' && errorMsg && (
         <p className="text-center text-sm text-red-600">{errorMsg}</p>

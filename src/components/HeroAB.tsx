@@ -107,9 +107,16 @@ export default function HeroAB() {
           ) : (
             <>
               <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
-                <span className="block">Your Resume is Sick!</span>
+                <span className="block">
+                  Your Resume is{' '}
+                  <span className="bg-gradient-to-r from-red-400 via-orange-400 to-red-400 bg-clip-text text-transparent">Sick</span>
+                  <span className="inline-block" style={{ transform: 'scaleX(-1)' }}>&#127777;</span>
+                </span>
+                <span className="mt-2 block text-2xl font-bold text-indigo-200 sm:text-3xl">
+                  Diagnose &amp; Fix it
+                </span>
                 <span className="block bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text pb-2 text-transparent sm:text-7xl" style={{ letterSpacing: '0.01em' }}>
-                  Diagnose &amp; Fix it with ResumeMD
+                  with <span className="font-black">Resume</span><span className="font-black text-white">MD</span>
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg font-semibold text-white">
