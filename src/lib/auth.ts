@@ -77,6 +77,20 @@ const config: NextAuthConfig = {
     signIn: "/login",
   },
   callbacks: {
+    authorized({ auth: session, request }) {
+      const isLoggedIn = !!session?.user;
+      const isProtected = request.nextUrl.pathname.startsWith("/dashboard") ||
+        request.nextUrl.pathname.startsWith("/curate") ||
+        request.nextUrl.pathname.startsWith("/resume") ||
+        request.nextUrl.pathname.startsWith("/applications") ||
+        request.nextUrl.pathname.startsWith("/profile") ||
+        request.nextUrl.pathname.startsWith("/onboarding");
+
+      if (isProtected && !isLoggedIn) {
+        return false; // redirects to signIn page
+      }
+      return true;
+    },
     async signIn({ user, account, profile }) {
       if (!user.email || !account) return false;
 
