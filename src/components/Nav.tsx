@@ -45,7 +45,7 @@ export default function Nav() {
 
           {/* Diagnose CTA */}
           <Link
-            href="/curate"
+            href={session?.user ? '/curate' : '/try'}
             className="mx-3 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-indigo-500 hover:shadow-lg hover:shadow-indigo-500/30"
           >
             Resume Diagnosis
@@ -135,7 +135,7 @@ export default function Nav() {
           <div className="space-y-1 px-4 pb-4 pt-2">
             {/* Diagnose CTA */}
             <Link
-              href="/curate"
+              href={session?.user ? '/curate' : '/try'}
               onClick={() => setMobileOpen(false)}
               className="block rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow-md"
             >
