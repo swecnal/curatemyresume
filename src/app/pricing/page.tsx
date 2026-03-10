@@ -199,8 +199,11 @@ export default function PricingPage() {
         )}
       </div>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Tier Breakdowns */}
-      <section className="border-t border-slate-200">
+      <section className="bg-gradient-to-b from-slate-50/60 via-white to-white">
         <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
           <h2 className="mb-4 text-center text-3xl font-extrabold text-slate-900">
             What Each Plan Gives You
@@ -260,8 +263,22 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Angled divider: breakdowns → CTA */}
+      <div className="relative" style={{ backgroundColor: '#ffffff' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 60"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '60px' }}
+        >
+          <path d="M0 60 L0 20 Q720 -20, 1440 20 L1440 60 Z" fill="#ffffff" />
+          <path d="M0 60 L0 40 Q720 0, 1440 40 L1440 60 Z" fill="#4f46e5" />
+        </svg>
+      </div>
+
       {/* Bottom CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-16">
+      <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-16">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-white">
             Start With a Free Diagnosis

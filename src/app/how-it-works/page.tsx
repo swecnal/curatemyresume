@@ -168,6 +168,22 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Wave divider: hero → content */}
+      <div className="relative -mt-1" style={{ backgroundColor: '#0f172a' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '80px' }}
+        >
+          <path
+            d="M0 40 C360 80, 720 0, 1080 40 S1440 60, 1440 40 L1440 80 L0 80 Z"
+            fill="#ffffff"
+          />
+        </svg>
+      </div>
+
       {/* Why It Works */}
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -205,8 +221,11 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Steps */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-slate-50 to-white py-20">
+      <section className="bg-gradient-to-br from-slate-50 to-white py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-16 text-center text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
             Four Steps to Your Next Role
@@ -227,8 +246,11 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Mid-page CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 py-16">
+      <section className="bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 py-16">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
             See it in action.
@@ -245,8 +267,11 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Features Grid */}
-      <section className="border-t border-slate-200 py-24">
+      <section className="py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-4 text-center text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
             What You Get
@@ -275,8 +300,11 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Contact */}
-      <section className="border-t border-slate-200 bg-slate-50 py-20">
+      <section className="bg-slate-50 py-20">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-4 text-center text-3xl font-extrabold text-slate-900">
             Get in Touch
@@ -298,8 +326,22 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
+      {/* Angled divider: contact → CTA */}
+      <div className="relative" style={{ backgroundColor: '#f8fafc' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 60"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '60px' }}
+        >
+          <path d="M0 60 L0 20 Q720 -20, 1440 20 L1440 60 Z" fill="#f8fafc" />
+          <path d="M0 60 L0 40 Q720 0, 1440 40 L1440 60 Z" fill="#4f46e5" />
+        </svg>
+      </div>
+
       {/* CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-20">
+      <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-4xl font-extrabold text-white lg:text-5xl">
             Ready to Diagnose Your First Role?

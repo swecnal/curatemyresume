@@ -28,6 +28,22 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      {/* Wave divider: hero → content */}
+      <div className="relative -mt-1" style={{ backgroundColor: '#0f172a' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '80px' }}
+        >
+          <path
+            d="M0 40 C360 80, 720 0, 1080 40 S1440 60, 1440 40 L1440 80 L0 80 Z"
+            fill="#ffffff"
+          />
+        </svg>
+      </div>
+
       {/* Mission */}
       <section className="py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -53,6 +69,9 @@ export default function CompanyPage() {
           </div>
         </div>
       </section>
+
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
 
       {/* Values */}
       <section className="bg-gradient-to-br from-indigo-50 via-white to-blue-50 py-24">
@@ -105,6 +124,9 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+
       {/* Contact */}
       <section className="py-20">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
@@ -123,8 +145,22 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      {/* Angled divider: contact → CTA */}
+      <div className="relative" style={{ backgroundColor: '#ffffff' }}>
+        <svg
+          className="block w-full"
+          viewBox="0 0 1440 60"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ height: '60px' }}
+        >
+          <path d="M0 60 L0 20 Q720 -20, 1440 20 L1440 60 Z" fill="#ffffff" />
+          <path d="M0 60 L0 40 Q720 0, 1440 40 L1440 60 Z" fill="#4f46e5" />
+        </svg>
+      </div>
+
       {/* CTA */}
-      <section className="border-t border-slate-200 bg-gradient-to-br from-indigo-600 to-blue-700 py-20">
+      <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-blue-800 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
             Ready to Get Started?
