@@ -93,7 +93,7 @@ const plans: PlanInfo[] = [
 
 export default function PricingCard({ currentTier, onSelectTier }: PricingCardProps) {
   return (
-    <div className="grid gap-6 md:grid-cols-3">
+    <div className="grid items-start gap-6 md:grid-cols-3">
       {plans.map((plan) => {
         const isCurrent = currentTier === plan.tier;
         return (
@@ -127,7 +127,7 @@ export default function PricingCard({ currentTier, onSelectTier }: PricingCardPr
               )}
             </div>
 
-            <ul className="mb-8 flex-1 space-y-3">
+            <ul className="mb-8 space-y-3">
               {plan.features.map((feature, i) => {
                 const [mainText, subText] = feature.split('||');
                 return (

@@ -160,7 +160,8 @@ export default function HowItWorksPage() {
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            How &amp; Why ResumeMD Works
+            <span className="block">How &amp; Why</span>
+            <span className="block">ResumeMD Works</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-indigo-200">
             Four simple steps from job posting to tailored application. No guesswork.

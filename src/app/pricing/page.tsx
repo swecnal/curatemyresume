@@ -223,35 +223,33 @@ export default function PricingPage() {
                   <span className="text-lg font-semibold text-indigo-600">{tier.price}</span>
                 </div>
 
-                <div className="grid gap-8 md:grid-cols-3">
-                  {/* What You Get */}
-                  <div>
-                    <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
-                      What You Get
-                    </h4>
-                    <ul className="space-y-2">
-                      {tier.whatYouGet.map((item, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                          <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                          </svg>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                {/* What You Get — compact inline list */}
+                <div className="mb-6">
+                  <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+                    What You Get
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {tier.whatYouGet.map((item, i) => (
+                      <span key={i} className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">
+                        <svg className="h-3.5 w-3.5 flex-shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        {item}
+                      </span>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Who It's For */}
+                {/* Who It's For + Why It Matters — side by side */}
+                <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                    <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">
                       Who It&apos;s For
                     </h4>
                     <p className="text-sm leading-relaxed text-slate-700">{tier.whoItsFor}</p>
                   </div>
-
-                  {/* Why It Matters */}
                   <div>
-                    <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">
                       Why It Matters
                     </h4>
                     <p className="text-sm leading-relaxed text-slate-700">{tier.whyItMatters}</p>
